@@ -1,19 +1,49 @@
-import json
-import urllib.request
 import os
+import requests
 
-# Podes futuramente adaptar este script para ler da API ou raspar a página do BotRix
-# Por agora, vamos garantir que o ficheiro JSON é gerado automaticamente pela action:
+# Configurações
+CHANNEL = "al1ss0nl"
+PLATFORM = "kick" # ou "twitch"
+BIN_ID = "6ad0da85ac6210605a33fee6" # O ID do teu Bin público no JSONbin
+JSONBIN_KEY = os.environ.get("JSONBIN_SECRET_KEY")
 
-leaderboard_data = [
-    {"rank": 1, "name": "Alisson (Exemplo)", "points": "18.900 Pts"},
-    {"rank": 2, "name": "Membro 2", "points": "12.450 Pts"},
-    {"rank": 3, "name": "Membro 3", "points": "9.800 Pts"},
-    {"rank": 4, "name": "Membro 4", "points": "7.500 Pts"},
-    {"rank": 5, "name": "Membro 5", "points": "6.200 Pts"}
-]
+# 1. Buscar dados públicos na API do BotRix
+url_botrix = f"https://botrix.live/api/public/leaderboard?user={CHANNEL}&platform={PLATFORM}&mode=points"
 
-with open('leaderboard.json', 'w', encoding='utf-8') as f:
-    json.dump(leaderboard_data, f, ensure_ascii=False, indent=2)
+try:
+    response = requests.get(url_botrix)
+    response.raise_for_status()
+    raw_data = response.json()
+    
+    # O BotRix devolve a lista de utilizadores. Vamos formatar para o formato do nosso pódio (Top 5)
+    leaderboard_list = []
+    # Dependendo da estrutura exata da API do BotRix, extraímos os campos principais
+    entries = raw_data if isinstance(raw_data, list) else raw_data.get("data", [])
+    
+    for index, user in enumerate(entries[:5], start=1):
+        leaderboard_list.append({
+            "rank": index,
+            "name": user.get("name", "Desconhecido"),
+            "points": f"{user.get('points', 0):,} Pts".replace(",", ".")
+        })
+    
+    # Se vier vazio por algum motivo, mantemos uma estrutura de segurança
+    if not leaderboard_list:
+        print("Aviso: Nenhum dado retornado pelo BotRix.")
+        exit(0)
 
-print("Leaderboard atualizado com sucesso!")
+    # 2. Enviar os dados atualizados para o JSONbin.io
+    url_jsonbin = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
+    headers = {
+        "Content-Type": "application/json",
+        "X-Master-Key": JSONBIN_KEY
+    }
+    
+    update_res = requests.put(url_jsonbin, json=leaderboard_list, headers=headers)
+    if update_res.status_code == 200:
+        print("JSONbin atualizado com sucesso com os dados do BotRix!")
+    else:
+        print(f"Erro ao atualizar JSONbin: {update_res.text}")
+
+except Exception as e:
+    print(f"Ocorreu um erro durante a atualização: {e}")
