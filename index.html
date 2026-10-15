@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>al1ss0nl | Interface Hextech</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontes do Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome para os ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Configurações de Cores do Tema */
+        :root {
+            --hex-blue: #0ac8b9;
+            --zaun-green: #1de25f;
+            --gold: #c8aa6e;
+            --dark-bg: #0a0a0c;
+            --panel-bg: #111a28;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.05) 0%, transparent 50%);
+            color: #f0e6d2;
+            overflow-x: hidden;
+        }
+
+        /* Efeito de recorte (Chanfro) Hextech */
+        .clip-hex {
+            clip-path: polygon(
+                20px 0, 
+                100% 0, 
+                100% calc(100% - 20px), 
+                calc(100% - 20px) 100%, 
+                0 100%, 
+                0 20px
+            );
+        }
+
+        .clip-hex-sm {
+            clip-path: polygon(
+                10px 0, 
+                100% 0, 
+                100% calc(100% - 10px), 
+                calc(100% - 10px) 100%, 
+                0 100%, 
+                0 10px
+            );
+        }
+
+        /* Cartões de Comando */
+        .cmd-card-wrapper {
+            position: relative;
+            background: linear-gradient(135deg, var(--gold) 0%, rgba(200,170,110,0.2) 50%, var(--gold) 100%);
+            padding: 2px; /* Espessura da borda */
+            transition: all 0.3s ease;
+        }
+
+        .cmd-card {
+            background-color: var(--panel-bg);
+            height: 100%;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .cmd-card-wrapper:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, var(--hex-blue) 0%, var(--zaun-green) 100%);
+            box-shadow: 0 10px 20px -5px rgba(29, 226, 95, 0.4), 0 0 15px rgba(10, 200, 185, 0.4);
+        }
+
+        .cmd-card-wrapper:hover .cmd-card {
+            background-color: #0b1521;
+        }
+
+        .cmd-card-wrapper:hover .cmd-title {
+            color: var(--zaun-green);
+            text-shadow: 0 0 8px rgba(29, 226, 95, 0.6);
+        }
+
+        /* Título com Glitch/Neon */
+        .neon-text-blue {
+            color: var(--hex-blue);
+            text-shadow: 0 0 10px rgba(10, 200, 185, 0.5), 0 0 20px rgba(10, 200, 185, 0.3);
+        }
+
+        .neon-text-green {
+            color: var(--zaun-green);
+            text-shadow: 0 0 10px rgba(29, 226, 95, 0.5), 0 0 20px rgba(29, 226, 95, 0.3);
+        }
+
+        /* Botões Sociais */
+        .btn-social {
+            position: relative;
+            overflow: hidden;
+            background: rgba(17, 26, 40, 0.8);
+            border: 1px solid var(--gold);
+            transition: all 0.4s ease;
+        }
+
+        .btn-social::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-twitch:hover {
+            border-color: #a970ff;
+            background: rgba(169, 112, 255, 0.1);
+            box-shadow: 0 0 15px rgba(169, 112, 255, 0.5);
+            color: #a970ff;
+        }
+
+        .btn-kick:hover {
+            border-color: #53fc18;
+            background: rgba(83, 252, 24, 0.1);
+            box-shadow: 0 0 15px rgba(83, 252, 24, 0.5);
+            color: #53fc18;
+        }
+
+        .btn-social:hover::before {
+            left: 100%;
+        }
+
+        /* Animação Z-Drive (Fundo) */
+        .z-drive-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            border: 1px dashed rgba(10, 200, 185, 0.1);
+            animation: spin 30s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative">
+
+    <!-- Decoração de fundo -->
+    <div class="z-drive-bg"></div>
+    <div class="z-drive-bg" style="width: 800px; height: 800px; border: 1px solid rgba(29, 226, 95, 0.05); animation-direction: reverse; animation-duration: 40s;"></div>
+
+    <main class="w-full max-w-5xl z-10">
+        
+        <!-- Cabeçalho -->
+        <header class="text-center mb-16 relative">
+            <div class="inline-block relative">
+                <!-- Detalhe decorativo topo -->
+                <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-[#c8aa6e] to-transparent"></div>
+                
+                <h1 class="text-6xl sm:text-8xl font-bold tracking-wider uppercase mb-2 text-[#c8aa6e]" style="text-shadow: 0 0 15px rgba(200, 170, 110, 0.4);">
+                    AL1SS0NL
+                </h1>
+                <p class="text-xl sm:text-2xl tracking-[0.3em] text-[#c8aa6e] uppercase font-semibold">
+                    Interface de Transmissão <i class="fa-solid fa-microchip ml-2 text-sm opacity-70"></i>
+                </p>
+                
+                <!-- Detalhe decorativo base -->
+                <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-48 h-[2px] bg-gradient-to-r from-transparent via-[#0ac8b9] to-transparent"></div>
+            </div>
+        </header>
+
+        <!-- Secção de Comandos -->
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-[2px] flex-grow bg-gradient-to-r from-transparent to-[var(--gold)] opacity-30"></div>
+                <h2 class="text-3xl font-bold text-center tracking-widest text-[#f0e6d2] uppercase">
+                    <i class="fa-solid fa-terminal mr-2 text-[var(--hex-blue)]"></i> Comandos da Live
+                </h2>
+                <div class="h-[2px] flex-grow bg-gradient-to-l from-transparent to-[var(--gold)] opacity-30"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Card 1: !aura -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-solid fa-bolt text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!aura</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            Mede o teu nível de AURA! Só os verdadeiros mestres do tempo invocam o <span class="text-[var(--zaun-green)]">gigaekko</span>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2: !67 -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-solid fa-stopwatch text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!67</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            Atalho rápido para medir a aura. O tempo não para, e a tua pontuação também não!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3: !lurk -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-solid fa-eye-slash text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!lurk</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            Avisa o chat que estás a assistir nas sombras. Modo Furtivo de Zaun ativado.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 4: !comandos -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-solid fa-book-journal-whills text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!comandos</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            Abre o arquivo completo com todos os comandos disponíveis para interagir na live.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 5: !insta -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-brands fa-instagram text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!insta, !ig</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            Envia o link do meu Instagram no chat. Aproveita e já me segue por lá! 📸
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 6: !youtube -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-brands fa-youtube text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!youtube, !yt</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            Link direto para o canal do YouTube. Inscreve-te lá para fortalecer o conteúdo! ▶️
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 7: !elo -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-solid fa-medal text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!elo, !rank</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            Mostra o meu Elo atualizado no League of Legends (Tier, Rank e PDL). ⚔️
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 8: !morena -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-solid fa-heart text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!morena</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            O bot sorteia de 1% a 100% qual a tua chance de conquistar a morena. ❤️
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 9: !gado -->
+                <div class="cmd-card-wrapper clip-hex h-40">
+                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
+                        <i class="fa-solid fa-cow text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!gado, !gd</h3>
+                        <p class="text-sm text-gray-400 font-medium leading-tight">
+                            O medidor não mente. Sorteia de 1% a 100% o quão gado tu és na live. 🐄
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Secção de Links (Redes/Plataformas) -->
+        <section class="flex flex-col items-center">
+            <h2 class="text-xl font-bold tracking-widest text-[#c8aa6e] uppercase mb-6">
+                Sincronização de Transmissão
+            </h2>
+            
+            <div class="flex flex-wrap justify-center gap-6">
+                
+                <!-- Kick Button -->
+                <a href="#" class="btn-social btn-kick clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group">
+                    <i class="fa-brands fa-kickstarter text-2xl group-hover:animate-pulse"></i>
+                    Assistir na Kick
+                </a>
+
+                <!-- Twitch Button -->
+                <a href="#" class="btn-social btn-twitch clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group">
+                    <i class="fa-brands fa-twitch text-2xl group-hover:animate-pulse"></i>
+                    Assistir na Twitch
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé simples -->
+    <footer class="mt-20 text-center opacity-50 text-sm font-medium">
+        <p>© 2026 AL1SS0NL.</p>
+    </footer>
+
+</body>
+</html>
