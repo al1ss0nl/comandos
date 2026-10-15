@@ -18,6 +18,7 @@
             --hex-blue: #0ac8b9;
             --zaun-green: #1de25f;
             --gold: #c8aa6e;
+            --gold-light: #f0e6d2;
             --dark-bg: #0a0a0c;
             --panel-bg: #111a28;
         }
@@ -26,9 +27,9 @@
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--dark-bg);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.05) 0%, transparent 50%),
-                linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)),
                 url('fundo.png');
             
             background-size: cover;
@@ -63,11 +64,11 @@
             );
         }
 
-        /* Animação de Entrada: Bem mais lenta e fluida */
+        /* Animação de Entrada fluida */
         @keyframes fadeInUp {
             0% {
                 opacity: 0;
-                transform: translateY(60px);
+                transform: translateY(45px);
             }
             100% {
                 opacity: 1;
@@ -75,10 +76,9 @@
             }
         }
 
-        /* Duração aumentada para 1.8 segundos para um movimento suave e lento */
         .fade-in-up {
             opacity: 0;
-            animation: fadeInUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* Cartões de Comando */
@@ -87,7 +87,7 @@
             background: linear-gradient(135deg, var(--gold) 0%, rgba(200,170,110,0.2) 50%, var(--gold) 100%);
             padding: 2px;
             transition: all 0.4s ease;
-            height: 90px; /* Altura inicial compacta */
+            height: 90px;
         }
 
         .cmd-card {
@@ -97,14 +97,12 @@
             transition: all 0.4s ease;
             display: flex;
             flex-direction: column;
-            /* Centralizado vertical e horizontalmente por predefinição */
             justify-content: center;
             align-items: center; 
             text-align: center;
             padding: 1rem;
         }
 
-        /* Descrição começa escondida */
         .cmd-desc {
             opacity: 0;
             max-height: 0;
@@ -112,7 +110,6 @@
             transition: all 0.4s ease-in-out;
         }
 
-        /* Quando passa o rato: expande, borda fica verde (Imagem 2) e o texto vai para o topo */
         .cmd-card-wrapper:hover {
             height: 160px;
             transform: translateY(-5px);
@@ -122,7 +119,6 @@
 
         .cmd-card-wrapper:hover .cmd-card {
             background-color: #0b1521;
-            /* Muda para alinhar ao topo/esquerda quando abre (estilo Imagem 2) */
             justify-content: flex-start;
             align-items: flex-start;
             text-align: left;
@@ -139,6 +135,195 @@
         .cmd-card-wrapper:hover .cmd-title {
             color: var(--zaun-green);
             text-shadow: 0 0 8px rgba(29, 226, 95, 0.6);
+        }
+
+        /* FEIXE LINEAR HORIZONTAL (Esquerda para a Direita) */
+@keyframes feixeHorizontal {
+    0% {
+        transform: translateX(-150%);
+    }
+    100% {
+        transform: translateX(150%);
+    }
+}
+
+.borda-feixe-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 2px;
+}
+
+.borda-feixe-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    animation: feixeHorizontal 3s ease-in-out infinite;
+}
+
+/* 1º Lugar: Feixe Dourado Piltover */
+.feixe-ouro::before {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(200, 170, 110, 0.2) 30%,
+        var(--gold) 50%,
+        #ffffff 65%,
+        var(--hex-blue) 80%,
+        transparent 100%
+    );
+}
+
+/* 2º Lugar: Feixe Azul Hextech */
+.feixe-ciano::before {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(10, 200, 185, 0.2) 30%,
+        var(--hex-blue) 50%,
+        #ffffff 70%,
+        transparent 100%
+    );
+}
+
+/* 3º Lugar: Feixe Verde Zaun */
+.feixe-verde::before {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(29, 226, 95, 0.2) 30%,
+        var(--zaun-green) 50%,
+        #ffffff 70%,
+        transparent 100%
+    );
+}
+
+        .conteudo-feixe {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* EMBLEMAS DE NÚMEROS (Estilo Documento / Cantos Recortados) */
+        .emblema-numero {
+            position: relative;
+            clip-path: polygon(
+                16px 0, 100% 0, 
+                100% calc(100% - 16px), 
+                calc(100% - 16px) 100%, 
+                0 100%, 0 16px
+            );
+            padding: 2px;
+        }
+
+        .emblema-miolo {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(
+                14px 0, 100% 0, 
+                100% calc(100% - 14px), 
+                calc(100% - 14px) 100%, 
+                0 100%, 0 14px
+            );
+        }
+
+        .emblema-canto-dobra {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 13px 13px 0;
+            border-color: transparent rgba(255, 255, 255, 0.25) transparent transparent;
+        }
+
+        /* BRILHOS DE TEXTO DINÂMICOS */
+        @keyframes shineNome {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .rank-nome-shine {
+            background: linear-gradient(
+                90deg, 
+                #f0e6d2 0%, 
+                #ffffff 30%, 
+                #f0e6d2 60%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineNome 4s linear infinite;
+        }
+
+        .rank-nome-shine-gold {
+            background: linear-gradient(
+                90deg, 
+                var(--gold) 0%, 
+                #fff8e7 30%, 
+                var(--gold) 60%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineNome 3.5s linear infinite;
+        }
+
+        /* Brilho Azul Hextech para o 2º Lugar */
+        .rank-nome-shine-blue {
+            background: linear-gradient(
+                90deg, 
+                var(--hex-blue) 0%, 
+                #d8fcff 30%, 
+                var(--hex-blue) 60%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineNome 3.5s linear infinite;
+        }
+
+        /* Brilho Verde Zaunita para o 3º Lugar */
+        .rank-nome-shine-green {
+            background: linear-gradient(
+                90deg, 
+                var(--zaun-green) 0%, 
+                #dcffe7 30%, 
+                var(--zaun-green) 60%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineNome 3.5s linear infinite;
+        }
+
+        /* Preservação das cores nativas dos ícones de plataforma */
+        .icon-kick {
+            color: #53fc18 !important;
+            -webkit-text-fill-color: #53fc18 !important;
+            filter: drop-shadow(0 0 4px rgba(83, 252, 24, 0.6));
+        }
+
+        .icon-twitch {
+            color: #9146FF !important;
+            -webkit-text-fill-color: #9146FF !important;
+            filter: drop-shadow(0 0 4px rgba(145, 70, 255, 0.6));
+        }
+
+        /* Hover Suave no Pódio */
+        .podium-card {
+            transition: transform 0.3s ease;
+        }
+        .podium-card:hover {
+            transform: translateY(-6px);
         }
 
         /* Botões Sociais */
@@ -177,7 +362,7 @@
             left: 100%;
         }
 
-        /* Animação Z-Drive (Fundo) */
+        /* Animação Z-Drive de Fundo */
         .z-drive-bg {
             position: absolute;
             top: 50%;
@@ -186,7 +371,7 @@
             width: 600px;
             height: 600px;
             border-radius: 50%;
-            border: 1px dashed rgba(10, 200, 185, 0.1);
+            border: 1px dashed rgba(10, 200, 185, 0.12);
             animation: spin 30s linear infinite;
             z-index: -1;
             pointer-events: none;
@@ -201,20 +386,20 @@
 
     <!-- Decoração de fundo -->
     <div class="z-drive-bg"></div>
-    <div class="z-drive-bg" style="width: 800px; height: 800px; border: 1px solid rgba(29, 226, 95, 0.05); animation-direction: reverse; animation-duration: 40s;"></div>
+    <div class="z-drive-bg" style="width: 820px; height: 820px; border: 1px solid rgba(29, 226, 95, 0.05); animation-direction: reverse; animation-duration: 45s;"></div>
 
     <main class="w-full max-w-5xl z-10">
         
         <!-- Cabeçalho -->
-        <header class="text-center mb-16 relative fade-in-up" style="animation-delay: 0.2s;">
+        <header class="text-center mb-16 relative fade-in-up" style="animation-delay: 0.15s;">
             <div class="inline-block relative">
                 <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-[#c8aa6e] to-transparent"></div>
                 
-                <h1 class="text-6xl sm:text-8xl font-bold tracking-wider uppercase mb-2 text-[#c8aa6e]" style="text-shadow: 0 0 15px rgba(200, 170, 110, 0.4);">
+                <h1 class="text-6xl sm:text-8xl font-bold tracking-wider uppercase mb-2 text-[#c8aa6e]" style="text-shadow: 0 0 20px rgba(200, 170, 110, 0.5);">
                     AL1SS0NL
                 </h1>
                 <p class="text-xl sm:text-2xl tracking-[0.3em] text-[#c8aa6e] uppercase font-semibold">
-                    ABAIXO ESTÁ OS <i class="fa-solid fa-microchip ml-2 text-sm opacity-70"></i>
+                    ABAIXO ESTÃO OS <i class="fa-solid fa-microchip ml-2 text-sm opacity-70"></i>
                 </p>
                 
                 <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-48 h-[2px] bg-gradient-to-r from-transparent via-[#0ac8b9] to-transparent"></div>
@@ -223,7 +408,7 @@
 
         <!-- Secção de Comandos -->
         <section class="mb-16">
-            <div class="flex items-center gap-4 mb-8 fade-in-up" style="animation-delay: 0.5s;">
+            <div class="flex items-center gap-4 mb-8 fade-in-up" style="animation-delay: 0.3s;">
                 <div class="h-[2px] flex-grow bg-gradient-to-r from-transparent to-[var(--gold)] opacity-30"></div>
                 <h2 class="text-3xl font-bold text-center tracking-widest text-[#f0e6d2] uppercase">
                     <i class="fa-solid fa-terminal mr-2 text-[var(--hex-blue)]"></i> Comandos da Live
@@ -231,11 +416,10 @@
                 <div class="h-[2px] flex-grow bg-gradient-to-l from-transparent to-[var(--gold)] opacity-30"></div>
             </div>
 
-            <!-- Cards com delays bem espaçados -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
                 <!-- Card 1: !aura -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.8s;">
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.4s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-bolt text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!aura</h3>
@@ -248,7 +432,7 @@
                 </div>
 
                 <!-- Card 2: !67 -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.0s;">
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.5s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-stopwatch text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!67</h3>
@@ -260,8 +444,21 @@
                     </div>
                 </div>
 
-                <!-- Card 3: !lurk -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.2s;">
+                <!-- Card 3: !pc -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.6s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-desktop text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!pc, !setup</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Mostra as especificações completas da máquina que roda a gameplay e as lives. 🖥️⚡
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: !lurk -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.7s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-eye-slash text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!lurk</h3>
@@ -273,8 +470,8 @@
                     </div>
                 </div>
 
-                <!-- Card 4: !comandos -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.4s;">
+                <!-- Card 5: !comandos -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.8s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-book-journal-whills text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!comandos</h3>
@@ -286,8 +483,8 @@
                     </div>
                 </div>
 
-                <!-- Card 5: !insta -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.6s;">
+                <!-- Card 6: !insta -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.9s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-brands fa-instagram text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!insta, !ig</h3>
@@ -299,8 +496,8 @@
                     </div>
                 </div>
 
-                <!-- Card 6: !youtube -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.8s;">
+                <!-- Card 7: !youtube -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.0s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-brands fa-youtube text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!youtube, !yt</h3>
@@ -312,8 +509,8 @@
                     </div>
                 </div>
 
-                <!-- Card 7: !elo -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.0s;">
+                <!-- Card 8: !elo -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.1s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-medal text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!elo, !rank</h3>
@@ -325,8 +522,8 @@
                     </div>
                 </div>
 
-                <!-- Card 8: !morena -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.2s;">
+                <!-- Card 9: !morena -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.2s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-heart text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!morena</h3>
@@ -338,8 +535,8 @@
                     </div>
                 </div>
 
-                <!-- Card 9: !gado -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.4s;">
+                <!-- Card 10: !gado -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.3s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-cow text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!gado, !gd</h3>
@@ -350,9 +547,9 @@
                         </div>
                     </div>
                 </div>
-				
-				<!-- Card 10: !followage -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.6s;">
+                
+                <!-- Card 11: !followage -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.4s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-user-clock text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!followage</h3>
@@ -364,8 +561,8 @@
                     </div>
                 </div>
 
-                <!-- Card 11: !level -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.8s;">
+                <!-- Card 12: !level -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.5s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-layer-group text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!level</h3>
@@ -377,8 +574,8 @@
                     </div>
                 </div>
 
-                <!-- Card 12: !points -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.0s;">
+                <!-- Card 13: !points -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.6s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-coins text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!points</h3>
@@ -390,8 +587,8 @@
                     </div>
                 </div>
 
-                <!-- Card 13: !top -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.2s;">
+                <!-- Card 14: !top -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.7s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-trophy text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!top</h3>
@@ -403,8 +600,8 @@
                     </div>
                 </div>
 
-                <!-- Card 14: !uptime -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.4s;">
+                <!-- Card 15: !uptime -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.8s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-clock text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!uptime</h3>
@@ -416,8 +613,8 @@
                     </div>
                 </div>
 
-                <!-- Card 15: !watchtime -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.6s;">
+                <!-- Card 16: !watchtime -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.9s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-glasses text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!watchtime</h3>
@@ -429,8 +626,8 @@
                     </div>
                 </div>
 
-                <!-- Card 16: !xp -->
-                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.8s;">
+                <!-- Card 17: !xp -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.0s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-bolt text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
                         <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!xp</h3>
@@ -444,11 +641,10 @@
 
             </div>
         </section>
-		
-		
-		<!-- Secção de Pódio / Ranking da Comunidade (Com números Hextech estilizados) -->
+        
+        <!-- Secção de Pódio / Ranking da Comunidade -->
         <section class="mb-16">
-            <div class="flex items-center gap-4 mb-8 fade-in-up" style="animation-delay: 4.4s;">
+            <div class="flex items-center gap-4 mb-8 fade-in-up" style="animation-delay: 2.2s;">
                 <div class="h-[2px] flex-grow bg-gradient-to-r from-transparent to-[var(--gold)] opacity-30"></div>
                 <h2 class="text-3xl font-bold text-center tracking-widest text-[#f0e6d2] uppercase">
                     <i class="fa-solid fa-medal mr-2 text-[var(--gold)]"></i> Top Mestres do Tempo
@@ -459,50 +655,72 @@
             <!-- Contentor do Pódio -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 
-                <!-- 2º Lugar (Prata / Azul Hextech) -->
-                <div class="clip-hex fade-in-up order-2 md:order-1 p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.2)] to-[var(--gold)]" style="animation-delay: 4.6s;">
-                    <div class="clip-hex p-6 bg-[#0b1521] flex flex-col items-center text-center relative overflow-hidden border-t-2 border-[var(--hex-blue)] h-full">
-                        <!-- Emblema do Número 2 Estilizado -->
-                        <div class="w-20 h-20 clip-hex bg-[#111a28] border-2 border-[var(--hex-blue)] flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(10,200,185,0.4)] mt-2">
-                            <span class="text-3xl font-black text-[var(--hex-blue)] tracking-tighter" style="text-shadow: 0 0 10px rgba(10,200,185,0.6);">02</span>
-                        </div>
-                        <h3 id="rank-name-2" class="text-xl font-bold text-[#f0e6d2] mb-1">A aguardar...</h3>
-                        <p class="text-xs text-[var(--hex-blue)] font-semibold tracking-wider uppercase mb-3">Vice-Campeão</p>
-                        <div id="rank-points-2" class="bg-[#152238] w-full py-2 px-4 clip-hex-sm text-sm font-bold text-gray-300 mt-auto">
-                            - Pontos
+                <!-- 2º Lugar (Azul Hextech com Feixe Ciano) -->
+                <div class="podium-card fade-in-up order-2 md:order-1 flex flex-col" style="animation-delay: 2.4s;">
+                    <div class="borda-feixe-wrapper feixe-ciano clip-hex flex-1 flex flex-col bg-[#0d1c2d]">
+                        <div class="conteudo-feixe clip-hex p-6 bg-[#0b1521] flex flex-col items-center text-center relative border-t-2 border-[var(--hex-blue)] flex-1">
+                            
+                            <!-- Emblema do Número 2 Estilizado (Cantos Recortados) -->
+                            <div class="emblema-numero w-20 h-20 bg-gradient-to-br from-[var(--hex-blue)] via-transparent to-[var(--hex-blue)] mb-4 mt-2 filter drop-shadow-[0_0_10px_rgba(10,200,185,0.6)]">
+                                <div class="emblema-miolo bg-[#111a28]">
+                                    <div class="emblema-canto-dobra"></div>
+                                    <span class="text-3xl font-black text-[var(--hex-blue)] tracking-tighter" style="text-shadow: 0 0 10px rgba(10,200,185,0.7);">02</span>
+                                </div>
+                            </div>
+
+                            <h3 id="rank-name-2" class="text-xl font-bold mb-1 rank-nome-shine-blue">A aguardar...</h3>
+                            <p class="text-xs text-[var(--hex-blue)] font-semibold tracking-wider uppercase mb-4">Vice-Campeão</p>
+                            <div id="rank-points-2" class="bg-[#152238] w-full py-2 px-4 clip-hex-sm text-sm font-bold text-gray-300 mt-auto">
+                                - Pontos
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 1º Lugar (Ouro / Destaque Principal) -->
-                <div class="clip-hex fade-in-up order-1 md:order-2 p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.4)] to-[var(--gold)] transform md:-translate-y-4" style="animation-delay: 4.5s;">
-                    <div class="clip-hex p-6 bg-[#111a28] flex flex-col items-center text-center relative overflow-hidden border-t-2 border-[var(--gold)] shadow-[0_0_20px_rgba(200,170,110,0.3)] h-full">
-                        <div class="absolute -top-1 text-[var(--gold)] animate-bounce">
-                            <i class="fa-solid fa-crown text-xl"></i>
-                        </div>
-                        <!-- Emblema do Número 1 Estilizado -->
-                        <div class="w-24 h-24 clip-hex bg-[#19263a] border-2 border-[var(--gold)] flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(200,170,110,0.6)] mt-2">
-                            <span class="text-4xl font-black text-[var(--gold)] tracking-tighter" style="text-shadow: 0 0 12px rgba(200,170,110,0.8);">01</span>
-                        </div>
-                        <h3 id="rank-name-1" class="text-2xl font-bold text-[var(--gold)] mb-1">A aguardar...</h3>
-                        <p class="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase mb-3">Rei do Tempo ⚡</p>
-                        <div id="rank-points-1" class="bg-[#1f304a] w-full py-2.5 px-4 clip-hex-sm text-base font-bold text-white shadow-inner mt-auto">
-                            - Pontos
+                <!-- 1º Lugar (Ouro / Destaque Principal com Feixe Ouro) -->
+                <div class="podium-card fade-in-up order-1 md:order-2 transform md:-translate-y-4 flex flex-col" style="animation-delay: 2.3s;">
+                    <div class="borda-feixe-wrapper feixe-ouro clip-hex flex-1 flex flex-col bg-[#1f2b3e]">
+                        <div class="conteudo-feixe clip-hex p-6 bg-[#111a28] flex flex-col items-center text-center relative border-t-2 border-[var(--gold)] flex-1">
+                            
+                            <div class="absolute -top-1 text-[var(--gold)] animate-bounce">
+                                <i class="fa-solid fa-crown text-2xl drop-shadow-[0_0_10px_rgba(200,170,110,0.9)]"></i>
+                            </div>
+
+                            <!-- Emblema do Número 1 Estilizado (Cantos Recortados) -->
+                            <div class="emblema-numero w-24 h-24 bg-gradient-to-br from-[var(--gold)] via-transparent to-[var(--gold)] mb-4 mt-2 filter drop-shadow-[0_0_14px_rgba(200,170,110,0.8)]">
+                                <div class="emblema-miolo bg-[#19263a]">
+                                    <div class="emblema-canto-dobra"></div>
+                                    <span class="text-4xl font-black text-[var(--gold)] tracking-tighter" style="text-shadow: 0 0 14px rgba(200,170,110,0.9);">01</span>
+                                </div>
+                            </div>
+
+                            <h3 id="rank-name-1" class="text-2xl font-bold mb-1 rank-nome-shine-gold">A aguardar...</h3>
+                            <p class="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase mb-4">Rei do Tempo ⚡</p>
+                            <div id="rank-points-1" class="bg-[#1f304a] w-full py-2.5 px-4 clip-hex-sm text-base font-bold text-white shadow-inner mt-auto border border-[rgba(200,170,110,0.4)]">
+                                - Pontos
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3º Lugar (Bronze / Verde Zaun) -->
-                <div class="clip-hex fade-in-up order-3 md:order-3 p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.2)] to-[var(--gold)]" style="animation-delay: 4.7s;">
-                    <div class="clip-hex p-6 bg-[#0b1521] flex flex-col items-center text-center relative overflow-hidden border-t-2 border-[var(--zaun-green)] h-full">
-                        <!-- Emblema do Número 3 Estilizado -->
-                        <div class="w-20 h-20 clip-hex bg-[#111a28] border-2 border-[var(--zaun-green)] flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(29,226,95,0.4)] mt-2">
-                            <span class="text-3xl font-black text-[var(--zaun-green)] tracking-tighter" style="text-shadow: 0 0 10px rgba(29,226,95,0.6);">03</span>
-                        </div>
-                        <h3 id="rank-name-3" class="text-xl font-bold text-[#f0e6d2] mb-1">A aguardar...</h3>
-                        <p class="text-xs text-[var(--zaun-green)] font-semibold tracking-wider uppercase mb-3">Pódio Zaunita</p>
-                        <div id="rank-points-3" class="bg-[#152238] w-full py-2 px-4 clip-hex-sm text-sm font-bold text-gray-300 mt-auto">
-                            - Pontos
+                <!-- 3º Lugar (Verde Zaun com Feixe Verde) -->
+                <div class="podium-card fade-in-up order-3 md:order-3 flex flex-col" style="animation-delay: 2.5s;">
+                    <div class="borda-feixe-wrapper feixe-verde clip-hex flex-1 flex flex-col bg-[#0e241b]">
+                        <div class="conteudo-feixe clip-hex p-6 bg-[#0b1521] flex flex-col items-center text-center relative border-t-2 border-[var(--zaun-green)] flex-1">
+                            
+                            <!-- Emblema do Número 3 Estilizado (Cantos Recortados) -->
+                            <div class="emblema-numero w-20 h-20 bg-gradient-to-br from-[var(--zaun-green)] via-transparent to-[var(--zaun-green)] mb-4 mt-2 filter drop-shadow-[0_0_10px_rgba(29,226,95,0.6)]">
+                                <div class="emblema-miolo bg-[#111a28]">
+                                    <div class="emblema-canto-dobra"></div>
+                                    <span class="text-3xl font-black text-[var(--zaun-green)] tracking-tighter" style="text-shadow: 0 0 10px rgba(29,226,95,0.7);">03</span>
+                                </div>
+                            </div>
+
+                            <h3 id="rank-name-3" class="text-xl font-bold mb-1 rank-nome-shine-green">A aguardar...</h3>
+                            <p class="text-xs text-[var(--zaun-green)] font-semibold tracking-wider uppercase mb-4">Pódio Zaunita</p>
+                            <div id="rank-points-3" class="bg-[#152238] w-full py-2 px-4 clip-hex-sm text-sm font-bold text-gray-300 mt-auto">
+                                - Pontos
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -510,29 +728,29 @@
             </div>
 
             <!-- Tabela para as posições seguintes (4º ao 5º) -->
-            <div class="clip-hex fade-in-up p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.2)] to-[var(--gold)]" style="animation-delay: 4.8s;">
+            <div class="clip-hex fade-in-up p-[2px] bg-gradient-to-br from-[var(--gold)] via-[rgba(200,170,110,0.2)] to-[var(--gold)]" style="animation-delay: 2.6s;">
                 <div class="clip-hex p-6 bg-[#0b1521]">
                     <h4 class="text-lg font-bold text-[#c8aa6e] mb-4 uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-list-ol text-[var(--hex-blue)]"></i> Demais Classificados
                     </h4>
                     
                     <div class="space-y-3">
-                        <!-- Posição 4 -->
-                        <div class="flex items-center justify-between p-3 bg-[#111a28] clip-hex-sm border-l-4 border-gray-600">
+                        <!-- Posição 5 -->
+                        <div class="flex items-center justify-between p-3 bg-[#111a28] clip-hex-sm border-l-4 border-gray-600 hover:bg-[#152238] transition-colors">
                             <div class="flex items-center gap-4">
                                 <span class="font-bold text-gray-400 w-6 text-center">#4</span>
-                                <span id="rank-name-4" class="font-medium text-[#f0e6d2]">A carregar...</span>
+                                <span id="rank-name-5" class="font-medium text-[#f0e6d2]">A carregar...</span>
                             </div>
-                            <span id="rank-points-4" class="text-sm font-semibold text-[var(--zaun-green)]">- Pontos</span>
+                            <span id="rank-points-5" class="text-sm font-semibold text-[var(--zaun-green)]">- Pontos</span>
                         </div>
 
                         <!-- Posição 5 -->
-                        <div class="flex items-center justify-between p-3 bg-[#111a28] clip-hex-sm border-l-4 border-gray-600">
+                        <div class="flex items-center justify-between p-3 bg-[#111a28] clip-hex-sm border-l-4 border-gray-600 hover:bg-[#152238] transition-colors">
                             <div class="flex items-center gap-4">
                                 <span class="font-bold text-gray-400 w-6 text-center">#5</span>
                                 <span id="rank-name-5" class="font-medium text-[#f0e6d2]">A carregar...</span>
                             </div>
-                            <span id="rank-points-5" class="text-sm font-semibold text-[var(--zaun-green)]">- Pontos</span>
+                            <span id="rank-points-5" class="text-sm font-semibold text-[var(--zaun-green)]">- Pts</span>
                         </div>
                     </div>
                 </div>
@@ -540,7 +758,7 @@
         </section>
 
         <!-- Secção de Links (Redes/Plataformas) -->
-        <div class="flex flex-wrap justify-center gap-6 fade-in-up" style="animation-delay: 2.6s;">
+        <div class="flex flex-wrap justify-center gap-6 fade-in-up" style="animation-delay: 2.7s;">
                 
             <!-- Kick Button -->
             <a href="https://kick.com/al1ss0nl" target="_blank" class="btn-social btn-kick clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#53fc18] text-[#53fc18] hover:bg-[#53fc18] hover:text-black transition-all duration-300">
@@ -574,57 +792,56 @@
     <footer class="mt-20 text-center opacity-50 text-sm font-medium fade-in-up" style="animation-delay: 2.8s;">
         <p>© 2026 AL1SS0NL.</p>
     </footer>
-	
-	  <!-- Script para atualizar o Leaderboard local -->
-	<script>
-		const LEADERBOARD_URL = 'https://api.jsonbin.io/v3/b/6ad0da85ac6210605a33fee6/latest';
-		const LEADERBOARD_REFRESH_MS = 60 * 1000; // 5 minutos
+    
+    <!-- Script para atualizar o Leaderboard -->
+    <script>
+        const LEADERBOARD_URL = 'https://api.jsonbin.io/v3/b/6ad0da85ac6210605a33fee6/latest';
+        const LEADERBOARD_REFRESH_MS = 5 * 60 * 1000; // 5 minutos
 
-		async function atualizarLeaderboard() {
-			try {
-				const response = await fetch(
-					`${LEADERBOARD_URL}?_=${Date.now()}`,
-					{ cache: 'no-store' }
-				);
+        async function atualizarLeaderboard() {
+            try {
+                const response = await fetch(
+                    `${LEADERBOARD_URL}?_=${Date.now()}`,
+                    { cache: 'no-store' }
+                );
 
-				if (!response.ok) {
-					throw new Error(`HTTP ${response.status}`);
-				}
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
 
-				const rankingData = await response.json();
-				// Se for uma lista direta (ficheiro local)
-				const lista = Array.isArray(rankingData) ? rankingData : (rankingData.record || []);
+                const rankingData = await response.json();
+                const lista = Array.isArray(rankingData) ? rankingData : (rankingData.record || []);
 
-				for (let rank = 1; rank <= 5; rank++) {
-					const user = lista.find(entry => Number(entry.rank) === rank);
-					const nameEl = document.getElementById(`rank-name-${rank}`);
-					const pointsEl = document.getElementById(`rank-points-${rank}`);
+                for (let rank = 1; rank <= 5; rank++) {
+                    const user = lista.find(entry => Number(entry.rank) === rank);
+                    const nameEl = document.getElementById(`rank-name-${rank}`);
+                    const pointsEl = document.getElementById(`rank-points-${rank}`);
 
-					if (user) {
-						let platformIcon = '';
-						if (user.platform === 'kick') {
-							platformIcon = '<i class="fa-brands fa-kickstarter text-[#53fc18] ml-2" title="Kick"></i>';
-						} else if (user.platform === 'twitch') {
-							platformIcon = '<i class="fa-brands fa-twitch text-[#9146FF] ml-2" title="Twitch"></i>';
-						}
+                    if (user) {
+                        let platformIcon = '';
+                        if (user.platform === 'kick') {
+                            platformIcon = '<i class="fa-brands fa-kickstarter icon-kick ml-2" title="Kick"></i>';
+                        } else if (user.platform === 'twitch') {
+                            platformIcon = '<i class="fa-brands fa-twitch icon-twitch ml-2" title="Twitch"></i>';
+                        }
 
-						if (nameEl) nameEl.innerHTML = (user.name ?? 'A aguardar...') + platformIcon;
-						if (pointsEl) pointsEl.textContent = user.points ?? '- Pontos';
-					} else {
-						if (nameEl) nameEl.textContent = 'A aguardar...';
-						if (pointsEl) pointsEl.textContent = '- Pontos';
-					}
-				}
+                        if (nameEl) nameEl.innerHTML = (user.name ?? 'A aguardar...') + platformIcon;
+                        if (pointsEl) pointsEl.textContent = user.points ?? '- Pontos';
+                    } else {
+                        if (nameEl) nameEl.textContent = 'A aguardar...';
+                        if (pointsEl) pointsEl.textContent = '- Pontos';
+                    }
+                }
 
-				console.log('Leaderboard atualizado:', new Date().toLocaleTimeString());
-			} catch (err) {
-				console.error('Erro ao atualizar o leaderboard:', err);
-			}
-		}
+                console.log('Leaderboard atualizado:', new Date().toLocaleTimeString());
+            } catch (err) {
+                console.error('Erro ao atualizar o leaderboard:', err);
+            }
+        }
 
-		atualizarLeaderboard();
-		setInterval(atualizarLeaderboard, LEADERBOARD_REFRESH_MS);
-	</script>
-	
+        atualizarLeaderboard();
+        setInterval(atualizarLeaderboard, LEADERBOARD_REFRESH_MS);
+    </script>
+    
 </body>
-</html> 
+</html>
