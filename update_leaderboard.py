@@ -19,13 +19,22 @@ try:
     response.raise_for_status()
     botrix_data = response.json()
     
-    if isinstance(botrix_data, list) and len(botrix_data) > 0:
+    if isinstance(botrix_data, list):
         formatted_list = []
+        # Preenche com os dados reais do BotRix
         for index, entry in enumerate(botrix_data[:5], start=1):
             formatted_list.append({
                 "rank": index,
                 "name": entry.get("name", "Desconhecido"),
                 "points": f"{entry.get('points', 0)} Pts"
+            })
+        
+        # Se houver menos de 5 utilizadores, preenche o resto automaticamente para o site não bugar
+        for index in range(len(formatted_list) + 1, 6):
+            formatted_list.append({
+                "rank": index,
+                "name": "A aguardar...",
+                "points": "- Pts"
             })
         
         url_jsonbin = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
