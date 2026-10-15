@@ -575,10 +575,10 @@
         <p>© 2026 AL1SS0NL.</p>
     </footer>
 	
-	   <!-- Script para atualizar o Leaderboard do JSONbin a cada 5 minutos -->
+	  <!-- Script para atualizar o Leaderboard local -->
 	<script>
 		const LEADERBOARD_URL = 'ranking.json';
-		const LEADERBOARD_REFRESH_MS = 5 * 60 * 1000; // 5 minutos
+		const LEADERBOARD_REFRESH_MS = 60 * 1000; // 1 minuto
 
 		async function atualizarLeaderboard() {
 			try {
@@ -591,13 +591,12 @@
 					throw new Error(`HTTP ${response.status}`);
 				}
 
-				const res = await response.json();
-				if (!Array.isArray(res.record)) {
-					throw new Error('Formato inesperado recebido do JSONbin');
-				}
+				const rankingData = await response.json();
+				// Se for uma lista direta (ficheiro local)
+				const lista = Array.isArray(rankingData) ? rankingData : (rankingData.record || []);
 
 				for (let rank = 1; rank <= 5; rank++) {
-					const user = res.record.find(entry => Number(entry.rank) === rank);
+					const user = lista.find(entry => Number(entry.rank) === rank);
 					const nameEl = document.getElementById(`rank-name-${rank}`);
 					const pointsEl = document.getElementById(`rank-points-${rank}`);
 
@@ -611,6 +610,9 @@
 
 						if (nameEl) nameEl.innerHTML = (user.name ?? 'A aguardar...') + platformIcon;
 						if (pointsEl) pointsEl.textContent = user.points ?? '- Pontos';
+					} else {
+						if (nameEl) nameEl.textContent = 'A aguardar...';
+						if (pointsEl) pointsEl.textContent = '- Pontos';
 					}
 				}
 
