@@ -18,6 +18,8 @@ try:
     response = requests.get(botrix_url, headers=headers_botrix)
     response.raise_for_status()
     botrix_data = response.json()
+    print DADOS RECEBIDOS DO BOTRIX
+    print botrix_data
     
     if isinstance(botrix_data, list):
         formatted_list = []
