@@ -574,6 +574,22 @@
     <footer class="mt-20 text-center opacity-50 text-sm font-medium fade-in-up" style="animation-delay: 2.8s;">
         <p>© 2026 AL1SS0NL.</p>
     </footer>
+	
+	<!-- Script para carregar o Leaderboard automaticamente do JSONbin.io -->
+    <script>
+        fetch('https://api.jsonbin.io/v3/b/6ad0da85ac6210605a33fee6/latest')
+            .then(response => response.json())
+            .then(res => {
+                const data = res.record;
+                data.forEach(user => {
+                    const nameEl = document.getElementById(`rank-name-${user.rank}`);
+                    const pointsEl = document.getElementById(`rank-points-${user.rank}`);
+                    if (nameEl) nameEl.textContent = user.name;
+                    if (pointsEl) pointsEl.textContent = user.points;
+                });
+            })
+            .catch(err => console.log('Erro ao carregar o leaderboard:', err));
+    </script>
 
 </body>
-</html>
+</html> 
