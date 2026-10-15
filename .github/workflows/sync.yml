@@ -3,7 +3,7 @@ name: Sincronizar Leaderboard BotRix
 on:
   schedule:
     # Corre automaticamente a cada 1 minuto
-    - cron: '*/1 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch: # Permite atualizar manualmente com um clique
 
 jobs:
