@@ -26,3 +26,4 @@ jobs:
           JSONBIN_SECRET_KEY: ${{ secrets.JSONBIN_SECRET_KEY }}
         run: python update_leaderboard.py
 # Mantém ativo
+
