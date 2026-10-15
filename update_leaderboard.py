@@ -1,22 +1,21 @@
 import os
 import requests
 
+# Configuração dos canais
 BIN_ID = "6ad0da85ac6210605a33fee6"
 JSONBIN_KEY = os.environ.get("JSONBIN_SECRET_KEY")
-CHANNEL_NAME = "al1ss0nl"
-PLATFORM = "kick"
 
-try:
-    if not JSONBIN_KEY:
-        raise RuntimeError("O segredo JSONBIN_SECRET_KEY não está configurado no GitHub.")
+CHANNELS = {
+    "kick": "al1ss0nl",
+    "twitch": "al1ss0nl",
+}
 
-    botrix_url = (
-        f"https://botrix.live/api/public/leaderboard"
-        f"?user={CHANNEL_NAME}&platform={PLATFORM}&mode=points"
-    )
-    print(f"A consultar o BotRix: {botrix_url}")
+API_BASE = "https://botrix.live/api/public/leaderboard"
 
-    headers_botrix = {
+
+def buscar_ranking(plataforma, canal):
+    url = f"{API_BASE}?user={canal}&platform={plataforma}&mode=points"
+    headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
             "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -25,41 +24,82 @@ try:
         "Accept": "application/json",
     }
 
-    response = requests.get(botrix_url, headers=headers_botrix, timeout=30)
-    print(f"Status BotRix: {response.status_code}")
+    print(f"Consultando BotRix ({plataforma}): {url}")
+    response = requests.get(url, headers=headers, timeout=30)
+    print(f"Status BotRix ({plataforma}): {response.status_code}")
     response.raise_for_status()
 
-    botrix_data = response.json()
-    print("DADOS RECEBIDOS DO BOTRIX:")
-    print(botrix_data)
+    dados = response.json()
+    print(f"Dados recebidos ({plataforma}): {dados}")
 
-    if not isinstance(botrix_data, list):
+    if not isinstance(dados, list):
         raise ValueError(
-            "A resposta do BotRix não é uma lista. "
+            f"A resposta do BotRix para {plataforma} não é uma lista. "
             "O JSONbin não será alterado."
         )
 
-    if not botrix_data:
-        raise ValueError(
-            "O BotRix devolveu uma lista vazia ([]). "
-            "O JSONbin foi preservado para não apagar o ranking existente."
+    return dados
+
+
+def main():
+    if not JSONBIN_KEY:
+        raise RuntimeError(
+            "O segredo JSONBIN_SECRET_KEY não está configurado no GitHub."
         )
 
-    formatted_list = []
-    for index, entry in enumerate(botrix_data[:5], start=1):
-        formatted_list.append({
-            "rank": index,
-            "name": entry.get("name", "Desconhecido"),
-            "points": f"{entry.get('points', 0)} Pts",
-            "platform": PLATFORM,
+    todos = []
+    erros = []
+
+    # Consulta as duas plataformas separadamente para que uma falha não
+    # impeça o uso dos dados válidos da outra.
+    for plataforma, canal in CHANNELS.items():
+        try:
+            entradas = buscar_ranking(plataforma, canal)
+            for entrada in entradas:
+                try:
+                    pontos = int(entrada.get("points", 0))
+                except (TypeError, ValueError):
+                    pontos = 0
+
+                todos.append({
+                    "name": str(entrada.get("name", "Desconhecido")),
+                    "points_value": pontos,
+                    "points": f"{pontos} Pts",
+                    "platform": plataforma,
+                })
+        except Exception as erro:
+            erros.append(f"{plataforma}: {erro}")
+            print(f"ERRO ao consultar {plataforma}: {erro}")
+
+    if not todos:
+        raise RuntimeError(
+            "Nenhum jogador foi recebido de Kick ou Twitch. "
+            "O JSONbin foi preservado para não apagar o ranking atual. "
+            + " | ".join(erros)
+        )
+
+    # Ordena os pontos de forma decrescente; em caso de empate, mantém
+    # uma ordenação estável com base na ordem de consulta (Kick, depois Twitch).
+    todos.sort(key=lambda jogador: jogador["points_value"], reverse=True)
+
+    ranking = []
+    for posicao, jogador in enumerate(todos[:5], start=1):
+        ranking.append({
+            "rank": posicao,
+            "name": jogador["name"],
+            "points": jogador["points"],
+            "platform": jogador["platform"],
         })
 
-    for index in range(len(formatted_list) + 1, 6):
-        formatted_list.append({
-            "rank": index,
+    for posicao in range(len(ranking) + 1, 6):
+        ranking.append({
+            "rank": posicao,
             "name": "A aguardar...",
             "points": "- Pts",
         })
+
+    print("TOP 5 UNIFICADO:")
+    print(ranking)
 
     url_jsonbin = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
     headers_jsonbin = {
@@ -67,16 +107,16 @@ try:
         "X-Master-Key": JSONBIN_KEY,
     }
 
-    update_res = requests.put(
+    resposta = requests.put(
         url_jsonbin,
-        json=formatted_list,
+        json=ranking,
         headers=headers_jsonbin,
         timeout=30,
     )
-    print(f"Resposta JSONbin (Status {update_res.status_code}): {update_res.text}")
-    update_res.raise_for_status()
+    print(f"Resposta JSONbin (Status {resposta.status_code}): {resposta.text}")
+    resposta.raise_for_status()
     print("JSONbin atualizado com sucesso!")
 
-except Exception as e:
-    print(f"Erro crítico na execução: {e}")
-    raise
+
+if __name__ == "__main__":
+    main()
