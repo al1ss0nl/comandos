@@ -1,43 +1,44 @@
 import os
 import requests
 
-CHANNEL = "al1ss0nl"
-PLATFORM = "kick"
 BIN_ID = "6ad0da85ac6210605a33fee6"
 JSONBIN_KEY = os.environ.get("JSONBIN_SECRET_KEY")
-
-url_botrix = f"https://botrix.live/api/public/leaderboard?user={CHANNEL}&platform={PLATFORM}&mode=points"
+CHANNEL_NAME = "al1ss0nl"  # O teu nome de utilizador na Kick
+PLATFORM = "kick"
 
 try:
-    response = requests.get(url_botrix)
+    # 1. Obter os dados reais diretamente da API pública do BotRix
+    botrix_url = f"https://botrix.live/api/public/leaderboard?user={CHANNEL_NAME}&platform={PLATFORM}&mode=points"
+    print(f"A consultar o BotRix: {botrix_url}")
+    
+    response = requests.get(botrix_url)
     response.raise_for_status()
-    raw_data = response.json()
-
-    leaderboard_list = []
-    entries = raw_data if isinstance(raw_data, list) else raw_data.get("data", [])
-
-    for index, user in enumerate(entries[:5], start=1):
-        leaderboard_list.append({
-            "rank": index,
-            "name": user.get("name", "Desconhecido"),
-            "points": f"{user.get('points', 0):,} Pts".replace(",", ".")
-        })
-
-    if not leaderboard_list:
-        print("Aviso: Nenhum dado retornado pelo BotRix.")
-        exit(0)
-
-    url_jsonbin = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
-    headers = {
-        "Content-Type": "application/json",
-        "X-Master-Key": JSONBIN_KEY
-    }
-
-    update_res = requests.put(url_jsonbin, json=leaderboard_list, headers=headers)
-    if update_res.status_code == 200:
-        print("JSONbin atualizado com sucesso com os dados do BotRix!")
+    botrix_data = response.json()
+    
+    # Valida se os dados vieram em formato de lista
+    if isinstance(botrix_data, list) and len(botrix_data) > 0:
+        formatted_list = []
+        for index, entry in enumerate(botrix_data[:10], start=1):
+            formatted_list.append({
+                "rank": index,
+                "name": entry.get("name", "Desconhecido"),
+                "points": f"{entry.get('points', 0):,} Pts".replace(",", ".")
+            })
+        
+        # 2. Enviar os dados reais obtidos para o JSONbin.io
+        url_jsonbin = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
+        headers = {
+            "Content-Type": "application/json",
+            "X-Master-Key": JSONBIN_KEY
+        }
+        
+        update_res = requests.put(url_jsonbin, json=formatted_list, headers=headers)
+        if update_res.status_code == 200:
+            print("JSONbin atualizado com sucesso com os dados reais da live!")
+        else:
+            print(f"Erro ao atualizar o JSONbin: {update_res.text}")
     else:
-        print(f"Erro ao atualizar JSONbin: {update_res.text}")
+        print("A API do BotRix devolveu uma lista vazia ou o canal está offline.")
 
 except Exception as e:
     print(f"Ocorreu um erro durante a atualização: {e}")
