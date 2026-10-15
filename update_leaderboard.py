@@ -10,7 +10,12 @@ try:
     botrix_url = f"https://botrix.live/api/public/leaderboard?user={CHANNEL_NAME}&platform={PLATFORM}&mode=points"
     print(f"A consultar o BotRix: {botrix_url}")
     
-    response = requests.get(botrix_url)
+    # Adicionamos headers de navegador para evitar o erro 403 Forbidden
+    headers_botrix = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    response = requests.get(botrix_url, headers=headers_botrix)
     response.raise_for_status()
     botrix_data = response.json()
     
@@ -24,17 +29,17 @@ try:
             })
         
         url_jsonbin = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
-        headers = {
+        headers_jsonbin = {
             "Content-Type": "application/json",
             "X-Master-Key": JSONBIN_KEY
         }
         
-        update_res = requests.put(url_jsonbin, json=formatted_list, headers=headers)
+        update_res = requests.put(url_jsonbin, json=formatted_list, headers=headers_jsonbin)
         print(f"Resposta JSONbin (Status {update_res.status_code}): {update_res.text}")
         update_res.raise_for_status()
         print("JSONbin atualizado com sucesso!")
     else:
-        print(f"Aviso: A API do BotRix devolveu dados inválidos ou vazios: {botrix_data}")
+        print(f"Aviso: A API do BotRix devolveu dados vazios: {botrix_data}")
 
 except Exception as e:
     print(f"Erro crítico na execução: {e}")
