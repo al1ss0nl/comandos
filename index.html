@@ -25,12 +25,11 @@
         body {
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--dark-bg);
-            /* O gradiente radial do teu tema fica por cima da imagem do Ekko */
             background-image: 
                 radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.05) 0%, transparent 50%),
-                linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Película escura */
-                url('fundo.png'); /* A tua imagem do Ekko */
+                linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('fundo.png');
             
             background-size: cover;
             background-position: center;
@@ -64,22 +63,58 @@
             );
         }
 
+        /* Animação de Entrada: Bem mais lenta e fluida */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Duração aumentada para 1.8 segundos para um movimento suave e lento */
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
         /* Cartões de Comando */
         .cmd-card-wrapper {
             position: relative;
             background: linear-gradient(135deg, var(--gold) 0%, rgba(200,170,110,0.2) 50%, var(--gold) 100%);
-            padding: 2px; /* Espessura da borda */
-            transition: all 0.3s ease;
+            padding: 2px;
+            transition: all 0.4s ease;
+            height: 90px; /* Altura inicial compacta */
         }
 
         .cmd-card {
             background-color: var(--panel-bg);
             height: 100%;
             width: 100%;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            /* Centralizado vertical e horizontalmente por predefinição */
+            justify-content: center;
+            align-items: center; 
+            text-align: center;
+            padding: 1rem;
         }
 
+        /* Descrição começa escondida */
+        .cmd-desc {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-in-out;
+        }
+
+        /* Quando passa o rato: expande, borda fica verde (Imagem 2) e o texto vai para o topo */
         .cmd-card-wrapper:hover {
+            height: 160px;
             transform: translateY(-5px);
             background: linear-gradient(135deg, var(--hex-blue) 0%, var(--zaun-green) 100%);
             box-shadow: 0 10px 20px -5px rgba(29, 226, 95, 0.4), 0 0 15px rgba(10, 200, 185, 0.4);
@@ -87,22 +122,23 @@
 
         .cmd-card-wrapper:hover .cmd-card {
             background-color: #0b1521;
+            /* Muda para alinhar ao topo/esquerda quando abre (estilo Imagem 2) */
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
+            padding-top: 1.25rem;
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+
+        .cmd-card-wrapper:hover .cmd-desc {
+            opacity: 1;
+            max-height: 100px;
         }
 
         .cmd-card-wrapper:hover .cmd-title {
             color: var(--zaun-green);
             text-shadow: 0 0 8px rgba(29, 226, 95, 0.6);
-        }
-
-        /* Título com Glitch/Neon */
-        .neon-text-blue {
-            color: var(--hex-blue);
-            text-shadow: 0 0 10px rgba(10, 200, 185, 0.5), 0 0 20px rgba(10, 200, 185, 0.3);
-        }
-
-        .neon-text-green {
-            color: var(--zaun-green);
-            text-shadow: 0 0 10px rgba(29, 226, 95, 0.5), 0 0 20px rgba(29, 226, 95, 0.3);
         }
 
         /* Botões Sociais */
@@ -170,9 +206,8 @@
     <main class="w-full max-w-5xl z-10">
         
         <!-- Cabeçalho -->
-        <header class="text-center mb-16 relative">
+        <header class="text-center mb-16 relative fade-in-up" style="animation-delay: 0.2s;">
             <div class="inline-block relative">
-                <!-- Detalhe decorativo topo -->
                 <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-[#c8aa6e] to-transparent"></div>
                 
                 <h1 class="text-6xl sm:text-8xl font-bold tracking-wider uppercase mb-2 text-[#c8aa6e]" style="text-shadow: 0 0 15px rgba(200, 170, 110, 0.4);">
@@ -182,14 +217,13 @@
                     ABAIXO ESTÁ OS <i class="fa-solid fa-microchip ml-2 text-sm opacity-70"></i>
                 </p>
                 
-                <!-- Detalhe decorativo base -->
                 <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-48 h-[2px] bg-gradient-to-r from-transparent via-[#0ac8b9] to-transparent"></div>
             </div>
         </header>
 
         <!-- Secção de Comandos -->
         <section class="mb-16">
-            <div class="flex items-center gap-4 mb-8">
+            <div class="flex items-center gap-4 mb-8 fade-in-up" style="animation-delay: 0.5s;">
                 <div class="h-[2px] flex-grow bg-gradient-to-r from-transparent to-[var(--gold)] opacity-30"></div>
                 <h2 class="text-3xl font-bold text-center tracking-widest text-[#f0e6d2] uppercase">
                     <i class="fa-solid fa-terminal mr-2 text-[var(--hex-blue)]"></i> Comandos da Live
@@ -197,143 +231,347 @@
                 <div class="h-[2px] flex-grow bg-gradient-to-l from-transparent to-[var(--gold)] opacity-30"></div>
             </div>
 
+            <!-- Cards com delays bem espaçados -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
                 <!-- Card 1: !aura -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-bolt text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!aura</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            Mede o teu nível de AURA! Só os verdadeiros mestres do tempo invocam o <span class="text-[var(--zaun-green)]">gigaekko</span>.
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.8s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-bolt text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!aura</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Mede o teu nível de AURA! Só os verdadeiros mestres do tempo invocam o <span class="text-[var(--zaun-green)]">gigaekko</span>.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 2: !67 -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-stopwatch text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!67</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            Atalho rápido para medir a aura. O tempo não para, e a tua pontuação também não!
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.0s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-stopwatch text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!67</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Atalho rápido para medir a aura. O tempo não para, e a tua pontuação também não!
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 3: !lurk -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-eye-slash text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!lurk</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            Avisa o chat que estás a assistir nas sombras. Modo Furtivo de Zaun ativado.
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.2s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-eye-slash text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!lurk</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Avisa o chat que estás a assistir nas sombras. Modo Furtivo de Zaun ativado.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 4: !comandos -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-book-journal-whills text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!comandos</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            Abre o arquivo completo com todos os comandos disponíveis para interagir na live.
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.4s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-book-journal-whills text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!comandos</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Abre o arquivo completo com todos os comandos disponíveis para interagir na live.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 5: !insta -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-brands fa-instagram text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!insta, !ig</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            Envia o link do meu Instagram no chat. Aproveita e já me segue por lá! 📸
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.6s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-brands fa-instagram text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!insta, !ig</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Envia o link do meu Instagram no chat. Aproveita e já me segue por lá! 📸
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 6: !youtube -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-brands fa-youtube text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!youtube, !yt</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            Link direto para o canal do YouTube. Inscreve-te lá para fortalecer o conteúdo! ▶️
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.8s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-brands fa-youtube text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!youtube, !yt</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Link direto para o canal do YouTube. Inscreve-te lá para fortalecer o conteúdo! ▶️
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 7: !elo -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-medal text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!elo, !rank</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            Mostra o meu Elo atualizado no League of Legends (Tier, Rank e PDL). ⚔️
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.0s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-medal text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!elo, !rank</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Mostra o meu Elo atualizado no League of Legends (Tier, Rank e PDL). ⚔️
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 8: !morena -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-heart text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!morena</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            O bot sorteia de 1% a 100% qual a tua chance de conquistar a morena. ❤️
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.2s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-heart text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!morena</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                O bot sorteia de 1% a 100% qual a tua chance de conquistar a morena. ❤️
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Card 9: !gado -->
-                <div class="cmd-card-wrapper clip-hex h-40">
-                    <div class="cmd-card clip-hex p-6 flex flex-col justify-center relative overflow-hidden">
-                        <i class="fa-solid fa-cow text-4xl absolute -right-2 -bottom-2 opacity-10 text-[var(--gold)]"></i>
-                        <h3 class="cmd-title text-2xl font-bold mb-2 text-[#c8aa6e] transition-colors">!gado, !gd</h3>
-                        <p class="text-sm text-gray-400 font-medium leading-tight">
-                            O medidor não mente. Sorteia de 1% a 100% o quão gado tu és na live. 🐄
-                        </p>
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.4s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-cow text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!gado, !gd</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                O medidor não mente. Sorteia de 1% a 100% o quão gado tu és na live. 🐄
+                            </p>
+                        </div>
+                    </div>
+                </div>
+				
+				<!-- Card 10: !followage -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.6s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-user-clock text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!followage</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Revela há quanto tempo exato segues o canal e fazes parte da comunidade. 🤝
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 11: !level -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.8s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-layer-group text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!level</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Consulta o teu nível atual de atividade e progressão na transmissão. 📊
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 12: !points -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.0s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-coins text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!points</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Mostra quantos pontos acumulados tens guardados no canal. 🪙
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 13: !top -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.2s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-trophy text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!top</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Exibe o ranking com os principais apoiadores e membros destaque da live. 🏆
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 14: !uptime -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.4s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-clock text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!uptime</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Verifica há quantas horas e minutos a transmissão está no ar. ⏱️
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 15: !watchtime -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.6s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-glasses text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!watchtime</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Informa o tempo total que já passaste a assistir às lives do canal. 👀
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 16: !xp -->
+                <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 3.8s;">
+                    <div class="cmd-card clip-hex relative overflow-hidden">
+                        <i class="fa-solid fa-bolt text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
+                        <h3 class="cmd-title text-2xl font-bold text-[#c8aa6e] transition-colors">!xp</h3>
+                        <div class="cmd-desc">
+                            <p class="text-sm text-gray-400 font-medium leading-tight mt-2">
+                                Mostra a tua experiência atual em XP e quanto falta para subir de nível. ⚡
+                            </p>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </section>
+		
+		
+		<!-- Secção de Pódio / Ranking da Comunidade (Com IDs automáticos) -->
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8 fade-in-up" style="animation-delay: 4.4s;">
+                <div class="h-[2px] flex-grow bg-gradient-to-r from-transparent to-[var(--gold)] opacity-30"></div>
+                <h2 class="text-3xl font-bold text-center tracking-widest text-[#f0e6d2] uppercase">
+                    <i class="fa-solid fa-medal mr-2 text-[var(--gold)]"></i> Top Mestres do Tempo
+                </h2>
+                <div class="h-[2px] flex-grow bg-gradient-to-l from-transparent to-[var(--gold)] opacity-30"></div>
+            </div>
 
-        <!-- Secção de Links (Redes/Plataformas) -->
-       <div class="flex flex-wrap justify-center gap-6">
+            <!-- Contentor do Pódio -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 
-                <!-- Kick Button -->
-                <a href="https://kick.com/al1ss0nl" target="_blank" class="btn-social btn-kick clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#53fc18] text-[#53fc18] hover:bg-[#53fc18] hover:text-black transition-all duration-300">
-                    <i class="fa-brands fa-kickstarter text-2xl group-hover:animate-pulse"></i>
-                    Assistir na Kick
-                </a>
+                <!-- 2º Lugar (Prata / Azul Hextech) -->
+                <div class="clip-hex fade-in-up order-2 md:order-1 p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.2)] to-[var(--gold)]" style="animation-delay: 4.6s;">
+                    <div class="clip-hex p-6 bg-[#0b1521] flex flex-col items-center text-center relative overflow-hidden border-t-2 border-[var(--hex-blue)] h-full">
+                        <div class="absolute top-3 right-3 text-2xl font-black text-gray-600 opacity-30">#2</div>
+                        <div class="w-16 h-16 rounded-full bg-[#111a28] border-2 border-[var(--hex-blue)] flex items-center justify-center mb-4 shadow-[0_0_10px_rgba(10,200,185,0.3)]">
+                            <i class="fa-solid fa-user text-2xl text-[var(--hex-blue)]"></i>
+                        </div>
+                        <h3 id="rank-name-2" class="text-xl font-bold text-[#f0e6d2] mb-1">A carregar...</h3>
+                        <p class="text-xs text-[var(--hex-blue)] font-semibold tracking-wider uppercase mb-3">Vice-Campeão</p>
+                        <div id="rank-points-2" class="bg-[#152238] w-full py-2 px-4 clip-hex-sm text-sm font-bold text-gray-300 mt-auto">
+                            - Pontos
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Twitch Button (Roxo) -->
-                <a href="https://twitch.tv/al1ss0nl" target="_blank" class="btn-social btn-twitch clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#9146FF] text-[#9146FF] hover:bg-[#9146FF] hover:text-white transition-all duration-300">
-                    <i class="fa-brands fa-twitch text-2xl group-hover:animate-pulse"></i>
-                    Assistir na Twitch
-                </a>
+                <!-- 1º Lugar (Ouro / Destaque Principal) -->
+                <div class="clip-hex fade-in-up order-1 md:order-2 p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.4)] to-[var(--gold)] transform md:-translate-y-4" style="animation-delay: 4.5s;">
+                    <div class="clip-hex p-6 bg-[#111a28] flex flex-col items-center text-center relative overflow-hidden border-t-2 border-[var(--gold)] shadow-[0_0_20px_rgba(200,170,110,0.3)] h-full">
+                        <div class="absolute -top-1 text-[var(--gold)] animate-bounce">
+                            <i class="fa-solid fa-crown text-xl"></i>
+                        </div>
+                        <div class="absolute top-3 right-3 text-2xl font-black text-[var(--gold)] opacity-20">#1</div>
+                        <div class="w-20 h-20 rounded-full bg-[#19263a] border-2 border-[var(--gold)] flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(200,170,110,0.5)] mt-2">
+                            <i class="fa-solid fa-user text-3xl text-[var(--gold)]"></i>
+                        </div>
+                        <h3 id="rank-name-1" class="text-2xl font-bold text-[var(--gold)] mb-1">A carregar...</h3>
+                        <p class="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase mb-3">Rei do Tempo ⚡</p>
+                        <div id="rank-points-1" class="bg-[#1f304a] w-full py-2.5 px-4 clip-hex-sm text-base font-bold text-white shadow-inner mt-auto">
+                            - Pontos
+                        </div>
+                    </div>
+                </div>
 
-                <!-- YouTube Button (Fica Vermelho) -->
-                <a href="https://www.youtube.com/al1ss0n" target="_blank" class="clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#ff0000] text-[#ff0000] hover:bg-[#ff0000] hover:text-white transition-all duration-300">
-                    <i class="fa-brands fa-youtube text-2xl group-hover:animate-pulse"></i>
-                    Ver no YouTube
-                </a>
-
-                <!-- Instagram Button (Degradê Roxo para Amarelo) -->
-                <a href="https://www.instagram.com/al1ss0nl" target="_blank" class="clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#c13584] text-[#c13584] hover:text-white hover:border-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-yellow-400 transition-all duration-300">
-                    <i class="fa-brands fa-instagram text-2xl group-hover:animate-pulse"></i>
-                    Seguir no Insta
-                </a>
+                <!-- 3º Lugar (Bronze / Verde Zaun) -->
+                <div class="clip-hex fade-in-up order-3 md:order-3 p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.2)] to-[var(--gold)]" style="animation-delay: 4.7s;">
+                    <div class="clip-hex p-6 bg-[#0b1521] flex flex-col items-center text-center relative overflow-hidden border-t-2 border-[var(--zaun-green)] h-full">
+                        <div class="absolute top-3 right-3 text-2xl font-black text-gray-600 opacity-30">#3</div>
+                        <div class="w-16 h-16 rounded-full bg-[#111a28] border-2 border-[var(--zaun-green)] flex items-center justify-center mb-4 shadow-[0_0_10px_rgba(29,226,95,0.3)]">
+                            <i class="fa-solid fa-user text-2xl text-[var(--zaun-green)]"></i>
+                        </div>
+                        <h3 id="rank-name-3" class="text-xl font-bold text-[#f0e6d2] mb-1">A carregar...</h3>
+                        <p class="text-xs text-[var(--zaun-green)] font-semibold tracking-wider uppercase mb-3">Pódio Zaunita</p>
+                        <div id="rank-points-3" class="bg-[#152238] w-full py-2 px-4 clip-hex-sm text-sm font-bold text-gray-300 mt-auto">
+                            - Pontos
+                        </div>
+                    </div>
+                </div>
 
             </div>
+
+            <!-- Tabela para as posições seguintes (4º ao 10º) -->
+            <div class="clip-hex fade-in-up p-[2px] bg-gradient-to-135 from-[var(--gold)] via-[rgba(200,170,110,0.2)] to-[var(--gold)]" style="animation-delay: 4.8s;">
+                <div class="clip-hex p-6 bg-[#0b1521]">
+                    <h4 class="text-lg font-bold text-[#c8aa6e] mb-4 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-[var(--hex-blue)]"></i> Demais Classificados
+                    </h4>
+                    
+                    <div class="space-y-3">
+                        <!-- Posição 4 -->
+                        <div class="flex items-center justify-between p-3 bg-[#111a28] clip-hex-sm border-l-4 border-gray-600">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-gray-400 w-6 text-center">#4</span>
+                                <span id="rank-name-4" class="font-medium text-[#f0e6d2]">A carregar...</span>
+                            </div>
+                            <span id="rank-points-4" class="text-sm font-semibold text-[var(--zaun-green)]">- Pontos</span>
+                        </div>
+
+                        <!-- Posição 5 -->
+                        <div class="flex items-center justify-between p-3 bg-[#111a28] clip-hex-sm border-l-4 border-gray-600">
+                            <div class="flex items-center gap-4">
+                                <span class="font-bold text-gray-400 w-6 text-center">#5</span>
+                                <span id="rank-name-5" class="font-medium text-[#f0e6d2]">A carregar...</span>
+                            </div>
+                            <span id="rank-points-5" class="text-sm font-semibold text-[var(--zaun-green)]">- Pontos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secção de Links (Redes/Plataformas) -->
+        <div class="flex flex-wrap justify-center gap-6 fade-in-up" style="animation-delay: 2.6s;">
+                
+            <!-- Kick Button -->
+            <a href="https://kick.com/al1ss0nl" target="_blank" class="btn-social btn-kick clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#53fc18] text-[#53fc18] hover:bg-[#53fc18] hover:text-black transition-all duration-300">
+                <i class="fa-brands fa-kickstarter text-2xl group-hover:animate-pulse"></i>
+                Assistir na Kick
+            </a>
+
+            <!-- Twitch Button -->
+            <a href="https://twitch.tv/al1ss0nl" target="_blank" class="btn-social btn-twitch clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#9146FF] text-[#9146FF] hover:bg-[#9146FF] hover:text-white transition-all duration-300">
+                <i class="fa-brands fa-twitch text-2xl group-hover:animate-pulse"></i>
+                Assistir na Twitch
+            </a>
+
+            <!-- YouTube Button -->
+            <a href="https://www.youtube.com/al1ss0n" target="_blank" class="clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#ff0000] text-[#ff0000] hover:bg-[#ff0000] hover:text-white transition-all duration-300">
+                <i class="fa-brands fa-youtube text-2xl group-hover:animate-pulse"></i>
+                Ver no YouTube
+            </a>
+
+            <!-- Instagram Button -->
+            <a href="https://www.instagram.com/al1ss0nl" target="_blank" class="clip-hex-sm px-8 py-4 flex items-center gap-3 text-lg font-bold min-w-[200px] justify-center group border border-[#c13584] text-[#c13584] hover:text-white hover:border-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-yellow-400 transition-all duration-300">
+                <i class="fa-brands fa-instagram text-2xl group-hover:animate-pulse"></i>
+                Seguir no Insta
+            </a>
+
+        </div>
 
     </main>
 
     <!-- Rodapé simples -->
-    <footer class="mt-20 text-center opacity-50 text-sm font-medium">
+    <footer class="mt-20 text-center opacity-50 text-sm font-medium fade-in-up" style="animation-delay: 2.8s;">
         <p>© 2026 AL1SS0NL.</p>
     </footer>
 
