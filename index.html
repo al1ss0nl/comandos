@@ -575,52 +575,54 @@
         <p>© 2026 AL1SS0NL.</p>
     </footer>
 	
-	    <!-- Script para atualizar o Leaderboard do JSONbin a cada 5 minutos -->
-    <script>
-        const LEADERBOARD_URL = 'https://api.jsonbin.io/v3/b/6ad0da85ac6210605a33fee6/latest';
-        const LEADERBOARD_REFRESH_MS = 5 * 60 * 1000; // 5 minutos
+	   <!-- Script para atualizar o Leaderboard do JSONbin a cada 5 minutos -->
+	<script>
+		const LEADERBOARD_URL = 'https://api.jsonbin.io/v3/b/6ad13816ac6210605a353a86/latest';
+		const LEADERBOARD_REFRESH_MS = 5 * 60 * 1000; // 5 minutos
 
-        async function atualizarLeaderboard() {
-            try {
-                // Evita reutilizar uma resposta em cache do navegador ou de intermediários.
-                const response = await fetch(
-                    `${LEADERBOARD_URL}?_=${Date.now()}`,
-                    { cache: 'no-store' }
-                );
+		async function atualizarLeaderboard() {
+			try {
+				const response = await fetch(
+					`${LEADERBOARD_URL}?_=${Date.now()}`,
+					{ cache: 'no-store' }
+				);
 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
+				if (!response.ok) {
+					throw new Error(`HTTP ${response.status}`);
+				}
 
-                const res = await response.json();
-                if (!Array.isArray(res.record)) {
-                    throw new Error('Formato inesperado recebido do JSONbin');
-                }
+				const res = await response.json();
+				if (!Array.isArray(res.record)) {
+					throw new Error('Formato inesperado recebido do JSONbin');
+				}
 
-                // Atualiza as posições 1 a 5 sem recarregar a página.
-                for (let rank = 1; rank <= 5; rank++) {
-                    const user = res.record.find(entry => Number(entry.rank) === rank);
-                    const nameEl = document.getElementById(`rank-name-${rank}`);
-                    const pointsEl = document.getElementById(`rank-points-${rank}`);
+				for (let rank = 1; rank <= 5; rank++) {
+					const user = res.record.find(entry => Number(entry.rank) === rank);
+					const nameEl = document.getElementById(`rank-name-${rank}`);
+					const pointsEl = document.getElementById(`rank-points-${rank}`);
 
-                    if (user) {
-                        if (nameEl) nameEl.textContent = user.name ?? 'A aguardar...';
-                        if (pointsEl) pointsEl.textContent = user.points ?? '- Pontos';
-                    }
-                }
+					if (user) {
+						let platformIcon = '';
+						if (user.platform === 'kick') {
+							platformIcon = '<i class="fa-brands fa-kickstarter text-[#53fc18] ml-2" title="Kick"></i>';
+						} else if (user.platform === 'twitch') {
+							platformIcon = '<i class="fa-brands fa-twitch text-[#9146FF] ml-2" title="Twitch"></i>';
+						}
 
-                console.log('Leaderboard atualizado:', new Date().toLocaleTimeString());
-            } catch (err) {
-                console.error('Erro ao atualizar o leaderboard:', err);
-            }
-        }
+						if (nameEl) nameEl.innerHTML = (user.name ?? 'A aguardar...') + platformIcon;
+						if (pointsEl) pointsEl.textContent = user.points ?? '- Pontos';
+					}
+				}
 
-        // Carrega imediatamente ao abrir a página.
-        atualizarLeaderboard();
+				console.log('Leaderboard atualizado:', new Date().toLocaleTimeString());
+			} catch (err) {
+				console.error('Erro ao atualizar o leaderboard:', err);
+			}
+		}
 
-        // Atualiza automaticamente a cada 5 minutos, sem precisar de F5.
-        setInterval(atualizarLeaderboard, LEADERBOARD_REFRESH_MS);
-    </script>
-
+		atualizarLeaderboard();
+		setInterval(atualizarLeaderboard, LEADERBOARD_REFRESH_MS);
+	</script>
+	
 </body>
 </html> 
