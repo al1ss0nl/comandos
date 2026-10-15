@@ -3,7 +3,7 @@ import requests
 
 BIN_ID = "6ad0da85ac6210605a33fee6"
 JSONBIN_KEY = os.environ.get("JSONBIN_SECRET_KEY")
-CHANNEL_NAME = "al1ss0nl"  # O teu nome de utilizador na Kick
+CHANNEL_NAME = "al1ss0nl"
 PLATFORM = "kick"
 
 try:
@@ -15,17 +15,17 @@ try:
     response.raise_for_status()
     botrix_data = response.json()
     
-    # Valida se os dados vieram em formato de lista
+    # 2. Formatar os dados para o formato que o site espera
     if isinstance(botrix_data, list) and len(botrix_data) > 0:
         formatted_list = []
-        for index, entry in enumerate(botrix_data[:10], start=1):
+        for index, entry in enumerate(botrix_data[:5], start=1):
             formatted_list.append({
                 "rank": index,
                 "name": entry.get("name", "Desconhecido"),
-                "points": f"{entry.get('points', 0):,} Pts".replace(",", ".")
+                "points": f"{entry.get('points', 0)} Pts"
             })
         
-        # 2. Enviar os dados reais obtidos para o JSONbin.io
+        # 3. Enviar os dados formatados para o JSONbin.io
         url_jsonbin = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
         headers = {
             "Content-Type": "application/json",
@@ -38,7 +38,7 @@ try:
         else:
             print(f"Erro ao atualizar o JSONbin: {update_res.text}")
     else:
-        print("A API do BotRix devolveu uma lista vazia ou o canal está offline.")
+        print("A API do BotRix devolveu uma lista vazia.")
 
 except Exception as e:
     print(f"Ocorreu um erro durante a atualização: {e}")
