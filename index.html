@@ -805,7 +805,15 @@
         .rank-row .icon-kick, .rank-row .icon-twitch { margin-left: 3px; }
 
         @media(max-width: 767px) {
-            body { padding-left: 12px !important; padding-right: 12px !important; overflow-x: hidden; background-attachment: scroll; }
+            body {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+                overflow-x: hidden;
+                background-color: #05090a;
+                background-image: radial-gradient(ellipse at 50% 12%, rgba(0, 92, 112, .16), transparent 55%), linear-gradient(#05090a, #07090d);
+                background-attachment: scroll;
+            }
+            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
             main { width: 100%; max-width: 560px; }
             header { margin-bottom: 2.75rem !important; }
             header h1 { font-size: clamp(2.5rem, 11vw, 4rem) !important; line-height: 1; }
@@ -823,11 +831,9 @@
             .rank-row-points { font-size: .78rem; }
             .social-links { display: flex; flex-direction: column; align-items: center; gap: 12px; }
             .social-glint { width: min(100%, 340px); min-width: 0; }
-            .hextech-center-name { font-size: clamp(1.5rem, 7vw, 2.5rem); letter-spacing: .12em; opacity: .2; }
 
-            /* Reduz o trabalho de pintura no celular mantendo a arte hextech visível. */
-            .hextech-backdrop { animation: none; opacity: .3; -webkit-mask-image: none; mask-image: none; }
-            .hextech-backdrop svg { filter: none; }
+            /* Mantém o layout leve no celular; o fundo detalhado continua no desktop. */
+            .hextech-backdrop, .hextech-center-name { display: none !important; }
             .hex-gear-rotor, .hex-crystal-cluster, .hex-spark,
             .hextech-emblem, .hextech-emblem-gear, .hexcore-float, .hexcore-orbit,
             .z-drive-bg { animation: none !important; filter: none !important; }
