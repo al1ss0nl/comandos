@@ -860,6 +860,26 @@
             .hextech-backdrop, .hextech-backdrop *, .hextech-center-name,
             .z-drive-bg, .rank-crown, .btn-social * { animation: none !important; transition: none !important; }
         }
+        /* Alguns navegadores móveis usam viewport de desktop; esta regra detecta o toque. */
+        @media (hover: none) and (pointer: coarse) and (max-width: 1024px) {
+            body {
+                background-color: #05090a !important;
+                background-image: radial-gradient(ellipse at 50% 12%, rgba(0, 92, 112, .16), transparent 55%), linear-gradient(#05090a, #07090d) !important;
+                background-attachment: scroll !important;
+            }
+            .hextech-backdrop {
+                display: block !important;
+                opacity: .22 !important;
+                animation: none !important;
+                -webkit-mask-image: none !important;
+                mask-image: none !important;
+            }
+            .hextech-backdrop, .hextech-backdrop *, .z-drive-bg, .hextech-center-name {
+                animation: none !important;
+                filter: none !important;
+            }
+            .hextech-center-name, .z-drive-bg { display: none !important; }
+        }
         @media (prefers-reduced-motion: reduce) {
             .lol-frame-image, .lol-crystal-glow, .rank-first .lol-avatar-frame, .rank-first .rank-crown { animation: none; }
         }
