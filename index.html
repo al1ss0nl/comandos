@@ -46,7 +46,7 @@
                     radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.12) 0%, transparent 55%),
                     radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.08) 0%, transparent 50%),
                     linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)),
-                    url('fundo.webp');
+                    url('fundo.png');
             }
         }
         
@@ -822,7 +822,7 @@
                 background-image: radial-gradient(ellipse at 50% 12%, rgba(0, 92, 112, .16), transparent 55%), linear-gradient(#05090a, #07090d) !important;
                 background-attachment: scroll;
             }
-            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+            .fade-in-up { animation: none !important; opacity: 1 !important; transform: none !important; }
             main { width: 100%; max-width: 560px; }
             header { margin-bottom: 2.75rem !important; }
             header h1 { font-size: clamp(2.5rem, 11vw, 4rem) !important; line-height: 1; }
@@ -832,7 +832,7 @@
             .lol-card.rank-first { order: 0; }
             .lol-card.rank-second { order: 1; }
             .lol-card.rank-third { order: 2; }
-            .rank-first .lol-rank-place { transform: translateY(-370px); }
+            .rank-first .lol-rank-place { transform: translateY(-377px); }
             .rank-heading { gap: 8px; }
             .rank-heading h2 { font-size: clamp(1.05rem, 4.8vw, 1.5rem); letter-spacing: .1em; }
             .rank-kicker { padding: 0 8px; font-size: .68rem; line-height: 1.55; letter-spacing: .14em; }
@@ -856,6 +856,9 @@
             .lol-crystal-glow { animation: none; filter: none; opacity: .58; }
             .lol-frame-art { filter: none; }
             .rank-first .rank-crown { animation: none; }
+            .lol-player-name { animation: nameLightSweep 4.2s linear infinite !important; }
+            .hextech-backdrop, .hextech-backdrop *, .hextech-center-name,
+            .z-drive-bg, .rank-crown, .btn-social * { animation: none !important; transition: none !important; }
         }
         @media (prefers-reduced-motion: reduce) {
             .lol-frame-image, .lol-crystal-glow, .rank-first .lol-avatar-frame, .rank-first .rank-crown { animation: none; }
