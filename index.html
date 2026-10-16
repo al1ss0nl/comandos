@@ -23,34 +23,31 @@
             --panel-bg: #111a28;
         }
 
+        /* Base para Celular: estático, leve e fluido */
         body {
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--dark-bg);
             background-image:
                 radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.12) 0%, transparent 55%),
-                radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.08) 0%, transparent 50%);
-            
+                radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)),
+                url('fundo.webp');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
-            
+            background-attachment: scroll;
             color: #f0e6d2;
             overflow-x: hidden;
         }
 
-        /* A imagem de fundo em alta resolução só é carregada no layout de PC. */
+        /* No PC: mantém imagem e efeito parallax intactos */
         @media (min-width: 768px) {
             body {
-                background-image:
-                    radial-gradient(circle at 50% 0%, rgba(10, 200, 185, 0.12) 0%, transparent 55%),
-                    radial-gradient(circle at 50% 100%, rgba(29, 226, 95, 0.08) 0%, transparent 50%),
-                    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)),
-                    url('fundo.png');
+                background-attachment: fixed;
             }
         }
         
-        /* Efeito de recorte (Chanfro) Hextech */
+        /* Efeito de recorte Hextech */
         .clip-hex {
             clip-path: polygon(
                 20px 0, 
@@ -174,7 +171,7 @@
             text-shadow: 0 0 8px rgba(29, 226, 95, 0.6);
         }
 
-        /* Preservação das cores nativas dos ícones de plataforma */
+        /* Cores dos Ícones de Plataforma */
         .icon-kick {
             color: #53fc18 !important;
             -webkit-text-fill-color: #53fc18 !important;
@@ -250,7 +247,7 @@
             56%, 100% { opacity: 0; background-position: 25% 0; }
         }
 
-        /* Animação Z-Drive de Fundo */
+        /* Animação Z-Drive de Fundo (PC) */
         .z-drive-bg {
             position: absolute;
             top: 50%;
@@ -269,7 +266,7 @@
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* Fundo hextech neon, com engrenagens girando e cristais flutuando */
+        /* SVG Background Hextech (PC) */
         .hextech-backdrop {
             position: fixed;
             inset: 0;
@@ -331,6 +328,7 @@
         @keyframes hextechBreath { 0%,100% { opacity: .58; } 50% { opacity: .82; } }
         @keyframes sigilTurn { to { transform: rotate(360deg); } }
         @keyframes sigilGlow { 0%,100% { opacity: .55; } 50% { opacity: .82; } }
+        
         .hextech-center-name {
             position: fixed;
             z-index: 1;
@@ -347,6 +345,8 @@
             text-shadow: 0 0 10px rgba(255,194,76,.9), 0 0 30px rgba(0,203,255,.55);
             mix-blend-mode: screen;
         }
+
+        /* Brilho no nickname */
         .lol-player-name {
             background-image: linear-gradient(110deg, #fff 0%, #fff 44%, #9cf2ff 49%, #fff 54%, #fff 100%);
             background-size: 260% 100%;
@@ -368,11 +368,12 @@
         #rank-name-2 { animation-delay: -1.4s; }
         #rank-name-3 { animation-delay: -2.8s; }
         @keyframes nameLightSweep { from { background-position: 100% 0; } to { background-position: 0 0; } }
+
         main { position: relative; z-index: 10; }
         footer { position: relative; z-index: 1; }
 
         /* ==========================================================================
-           NOVO LEADERBOARD: ESTILO LOADING SCREEN / BORDAS DE POSIÇÃO DO LOL
+           LEADERBOARD: PC MANTIDO INTACTO
            ========================================================================== */
         .rank-stage { position: relative; isolation: isolate; }
         .rank-heading { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 24px; }
@@ -390,7 +391,6 @@
             align-items: center;
         }
 
-        /* Card Container Principal */
         .lol-card {
             position: relative;
             padding: 0;
@@ -438,8 +438,7 @@
             transform: translateY(-8px);
         }
 
-        /* CORES ESPECÍFICAS DE CADA CARD */
-        /* 1º Lugar - Challenger / Hextech / Gold */
+        /* Cores dos Ranks */
         .lol-card.rank-first {
             --theme-c1: #c89b3c;
             --theme-c2: #39bfff;
@@ -449,7 +448,6 @@
             min-height: 0;
         }
 
-        /* 2º Lugar - Grandmaster / Red / Crimson */
         .lol-card.rank-second {
             --theme-c1: #ff302f;
             --theme-c2: #ff6b35;
@@ -459,7 +457,6 @@
             min-height: 0;
         }
 
-        /* 3º Lugar - Master / Void / Purple */
         .lol-card.rank-third {
             --theme-c1: #c032ff;
             --theme-c2: #7a38ff;
@@ -469,7 +466,7 @@
             min-height: 0;
         }
 
-        /* MOLDURA EXTERNA (COM FEIXE CONFINADO À BORDA) */
+        /* Feixe de Luz Confinado à Borda no PC */
         .lol-card-border {
             position: absolute;
             inset: 0;
@@ -518,6 +515,7 @@
         .rank-first .lol-card-border::after { background-image: linear-gradient(105deg, transparent 0%, transparent 46%, rgba(229,178,75,.2) 48%, #fff 50%, rgba(57,191,255,.85) 52%, transparent 54%, transparent 100%); }
         .rank-second .lol-card-border::after { background-image: linear-gradient(105deg, transparent 0%, transparent 46%, rgba(255,48,47,.22) 48%, #fff 50%, rgba(255,48,47,.9) 52%, transparent 54%, transparent 100%); }
         .rank-third .lol-card-border::after { background-image: linear-gradient(105deg, transparent 0%, transparent 46%, rgba(192,50,255,.2) 48%, #fff 50%, rgba(174,46,255,.9) 52%, transparent 54%, transparent 100%); }
+        
         .rank-first .lol-frame-art,
         .rank-first .lol-top-crest,
         .rank-first .lol-avatar-wing,
@@ -527,6 +525,7 @@
         .lol-top-gem,
         .lol-avatar-wing,
         .lol-bottom-crest { display: none !important; }
+        
         .lol-frame-image,
         .lol-crystal-glow { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
         .lol-frame-image {
@@ -557,7 +556,7 @@
         .lol-frame-art .glint { fill: none; stroke: #fff; stroke-width: .7; opacity: .78; }
         .lol-frame-art .gem { fill: var(--theme-c2); stroke: #fff; stroke-width: .8; }
 
-        /* CORPO INTERNO DO CARD */
+        /* Corpo Interno do Card */
         .lol-card-inner {
             position: relative;
             z-index: 6;
@@ -621,44 +620,13 @@
             50% { transform: translate(-50%, -2px); }
         }
 
-        /* ORNAMENTOS DE TOPO (Crest Superior) */
-        .lol-top-crest {
-            position: absolute;
-            top: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 16px;
-            background: linear-gradient(180deg, var(--theme-c1), transparent);
-            clip-path: polygon(50% 100%, 100% 0, 0 0);
-            filter: drop-shadow(0 2px 5px var(--theme-glow));
-            z-index: 4;
-        }
-
-        .lol-top-gem {
-            width: 18px;
-            height: 18px;
-            margin-top: 4px;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #ffffff, var(--theme-c1));
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            box-shadow: 0 0 10px var(--theme-c2);
-            animation: gemPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes gemPulse {
-            0%, 100% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.15); filter: brightness(1.4); }
-        }
-
-        /* AVATAR COM ASAS LATERAIS (Moldura Redonda Estilo LoL) */
         .lol-avatar-container {
             position: relative;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-			transform: translateY(-170px);
+            transform: translateY(-170px);
         }
 
         .lol-avatar-frame {
@@ -676,10 +644,6 @@
             width: 500px;
             height: 500px;
             animation: none;
-        }
-        @keyframes avatarAura {
-            0%, 100% { box-shadow: 0 0 12px var(--theme-glow), inset 0 0 10px rgba(0,0,0,.8); }
-            50% { box-shadow: 0 0 22px var(--theme-glow), 0 0 8px rgba(255,205,70,.5), inset 0 0 10px rgba(0,0,0,.8); }
         }
 
         .lol-avatar-inner {
@@ -699,30 +663,6 @@
         .lol-avatar-inner i { color: var(--theme-c1); opacity: .72; font-size: 34px; filter: drop-shadow(0 0 7px var(--theme-glow)); }
         .rank-first .lol-avatar-inner i { color: #e8bd63; }
 
-        /* Asinhas que abraçam o círculo */
-        .lol-avatar-wing {
-            position: absolute;
-            top: 20%;
-            width: 28px;
-            height: 64px;
-            background: linear-gradient(135deg, #ffffff 0%, var(--theme-c1) 40%, var(--theme-border) 100%);
-            z-index: 1;
-            filter: drop-shadow(0 0 6px var(--theme-glow));
-        }
-
-        .lol-avatar-wing.left {
-            left: -18px;
-            clip-path: polygon(100% 20%, 0% 0%, 40% 70%, 100% 100%);
-            transform: rotate(-10deg);
-        }
-
-        .lol-avatar-wing.right {
-            right: -18px;
-            clip-path: polygon(0% 20%, 100% 0%, 60% 70%, 0% 100%);
-            transform: rotate(10deg);
-        }
-
-        /* TEXTOS & INFORMAÇÕES */
         .lol-rank-place {
             font-size: 0.85rem;
             font-weight: 700;
@@ -731,18 +671,6 @@
             color: var(--theme-c1);
             text-shadow: 0 0 10px var(--theme-glow);
             margin-bottom: 4px;
-        }
-
-        .lol-player-name {
-            font-size: clamp(1.2rem, 2.2vw, 1.7rem);
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-            text-shadow: 0 0 15px rgba(255,255,255,0.4);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
         }
 
         .lol-points-badge {
@@ -760,44 +688,8 @@
             box-shadow: 0 0 12px rgba(0,0,0,0.5);
             margin-bottom: auto;
         }
+        .lol-points-badge i { color: var(--theme-c1); }
 
-        .lol-points-badge i {
-            color: var(--theme-c1);
-        }
-
-        /* ASA/BRASÃO INFERIOR (Rank Crest no pé do card) */
-        .lol-bottom-crest {
-            position: relative;
-            width: 100%;
-            height: 52px;
-            margin-top: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lol-wing-shard {
-            position: absolute;
-            bottom: 0;
-            width: 75%;
-            height: 38px;
-            background: linear-gradient(180deg, var(--theme-c1) 0%, #0d1722 80%);
-            clip-path: polygon(0 0, 100% 0, 85% 100%, 50% 60%, 15% 100%);
-            filter: drop-shadow(0 -3px 8px var(--theme-glow));
-            opacity: 0.85;
-        }
-
-        .lol-wing-inner-glow {
-            position: absolute;
-            bottom: 4px;
-            width: 40%;
-            height: 24px;
-            background: linear-gradient(180deg, #ffffff, var(--theme-c2));
-            clip-path: polygon(50% 0%, 100% 70%, 50% 100%, 0% 70%);
-            filter: drop-shadow(0 0 8px var(--theme-c2));
-        }
-
-        /* DEMAIS CLASSIFICADOS (4º e 5º Lugares) */
         .rank-lower {
             border: 1px solid rgba(54, 181, 255, 0.35);
             padding: 16px;
@@ -813,6 +705,10 @@
         .rank-row-points { color: #8bdcff; white-space: nowrap; font-weight: 700; font-size: .9rem; }
         .rank-row .icon-kick, .rank-row .icon-twitch { margin-left: 3px; }
 
+        /* ==========================================================================
+           OTIMIZAÇÃO RADICAL PARA CELULAR (<768px):
+           Remove todas as sobrecargas de GPU e garante rolagem a 60 FPS
+           ========================================================================== */
         @media(max-width: 767px) {
             body {
                 padding-left: 12px !important;
@@ -820,79 +716,58 @@
                 overflow-x: hidden;
                 background-color: #05090a !important;
                 background-image: radial-gradient(ellipse at 50% 12%, rgba(0, 92, 112, .16), transparent 55%), linear-gradient(#05090a, #07090d) !important;
-                background-attachment: scroll;
+                background-attachment: scroll !important;
             }
+            
             .fade-in-up { animation: none !important; opacity: 1 !important; transform: none !important; }
             main { width: 100%; max-width: 560px; }
             header { margin-bottom: 2.75rem !important; }
             header h1 { font-size: clamp(2.5rem, 11vw, 4rem) !important; line-height: 1; }
             header p { font-size: clamp(.82rem, 3.6vw, 1rem) !important; letter-spacing: .16em !important; line-height: 1.5; }
+            
             .rank-podium { grid-template-columns: 1fr; gap: 18px; width: 100%; max-width: 370px; margin: 0 auto; }
-            .lol-card { aspect-ratio: .82 / 1; }
+            .lol-card { aspect-ratio: .82 / 1; filter: none !important; }
             .lol-card.rank-first { order: 0; }
             .lol-card.rank-second { order: 1; }
             .lol-card.rank-third { order: 2; }
+            
             .rank-first .lol-rank-place { transform: translateY(-405px) !important; }
             .rank-first .rank-crown { top: 92px !important; }
+            
             .rank-heading { gap: 8px; }
             .rank-heading h2 { font-size: clamp(1.05rem, 4.8vw, 1.5rem); letter-spacing: .1em; }
             .rank-kicker { padding: 0 8px; font-size: .68rem; line-height: 1.55; letter-spacing: .14em; }
             .rank-lower-grid { grid-template-columns: 1fr; }
             .rank-row { gap: 8px; padding: 8px; }
             .rank-row-points { font-size: .78rem; }
+            
             .social-links { display: flex; flex-direction: column; align-items: center; gap: 12px; }
             .social-glint { width: min(100%, 340px); min-width: 0; }
 
-            /* Mantém o layout leve no celular; o fundo detalhado continua no desktop. */
-            .hextech-backdrop, .hextech-center-name { display: none !important; }
-            .hex-gear-rotor, .hex-crystal-cluster, .hex-spark,
-            .hextech-emblem, .hextech-emblem-gear, .hexcore-float, .hexcore-orbit,
-            .z-drive-bg { animation: none !important; filter: none !important; }
-            .z-drive-bg { display: none; }
-            .lol-card { filter: none; }
+            /* Remove fundos SVG e efeitos de GPU que travam o aparelho */
+            .hextech-backdrop, 
+            .hextech-center-name,
+            .z-drive-bg { 
+                display: none !important; 
+            }
+
             .lol-card::before,
             .lol-card-border::after,
-            .social-glint::after { animation: none !important; opacity: 0 !important; }
-            .lol-frame-image { animation: none; }
-            .lol-crystal-glow { animation: none; filter: none; opacity: .58; }
-            .lol-frame-art { filter: none; }
-            .rank-first .rank-crown { animation: none; }
+            .social-glint::after { 
+                display: none !important; 
+                animation: none !important; 
+                opacity: 0 !important; 
+            }
+
+            .lol-frame-image { animation: none !important; }
+            .lol-crystal-glow { animation: none !important; filter: none !important; opacity: .58 !important; }
+            .lol-frame-art { filter: none !important; }
+            .rank-crown { animation: none !important; }
+            
+            /* Mantém apenas o brilho sutil no texto do nick */
             .lol-player-name { animation: nameLightSweep 4.2s linear infinite !important; }
-            .hextech-backdrop, .hextech-backdrop *, .hextech-center-name,
-            .z-drive-bg, .rank-crown, .btn-social * { animation: none !important; transition: none !important; }
         }
-        /* Alguns navegadores móveis usam viewport de desktop; esta regra detecta o toque. */
-        @media (hover: none) and (pointer: coarse) and (max-width: 1024px) {
-            body {
-                background-color: #05090a !important;
-                background-image: none !important;
-                background-attachment: scroll !important;
-            }
-            body::before {
-                content: "";
-                position: fixed;
-                inset: 0;
-                z-index: 0;
-                pointer-events: none;
-                background: radial-gradient(ellipse at 50% 12%, rgba(0, 92, 112, .16), transparent 55%), linear-gradient(#05090a, #07090d);
-            }
-            .hextech-backdrop {
-                display: block !important;
-                opacity: .22 !important;
-                animation: none !important;
-                -webkit-mask-image: none !important;
-                mask-image: none !important;
-            }
-            .hextech-backdrop, .hextech-backdrop *, .z-drive-bg, .hextech-center-name {
-                animation: none !important;
-                filter: none !important;
-            }
-            .hextech-backdrop .hex-gear-rotor { display: none !important; }
-            .hextech-center-name { display: block !important; opacity: .2; }
-            .z-drive-bg { display: none !important; }
-            .rank-first .lol-rank-place { transform: translateY(-405px) !important; }
-            .rank-first .rank-crown { top: 92px !important; }
-        }
+
         @media (prefers-reduced-motion: reduce) {
             .lol-frame-image, .lol-crystal-glow, .rank-first .lol-avatar-frame, .rank-first .rank-crown { animation: none; }
         }
@@ -900,9 +775,10 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative">
 
-    <!-- Decoração de fundo -->
+    <!-- Decoração de fundo (Apenas para Desktop) -->
     <div class="z-drive-bg"></div>
     <div class="z-drive-bg" style="width: 820px; height: 820px; border: 1px solid rgba(29, 226, 95, 0.05); animation-direction: reverse; animation-duration: 45s;"></div>
+    
     <div class="hextech-backdrop" aria-hidden="true">
         <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
             <defs>
@@ -977,6 +853,7 @@
             </g></g>
         </svg>
     </div>
+    
     <div class="hextech-center-name" aria-hidden="true">AL1SS0NL</div>
 
     <main class="w-full max-w-5xl z-10">
@@ -997,7 +874,7 @@
             </div>
         </header>
 
-        <!-- Secção de Comandos -->
+        <!-- Seção de Comandos -->
         <section class="mb-16">
             <div class="flex items-center gap-4 mb-8 fade-in-up" style="animation-delay: 0.3s;">
                 <div class="h-[2px] flex-grow bg-gradient-to-r from-transparent to-[var(--gold)] opacity-30"></div>
@@ -1008,7 +885,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1: !aura -->
+                <!-- 1: !aura -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.4s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-bolt text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1021,7 +898,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2: !67 -->
+                <!-- 2: !67 -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.5s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-stopwatch text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1034,7 +911,7 @@
                     </div>
                 </div>
 
-                <!-- Card 3: !pc -->
+                <!-- 3: !pc -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.6s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-desktop text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1047,7 +924,7 @@
                     </div>
                 </div>
 
-                <!-- Card 4: !lurk -->
+                <!-- 4: !lurk -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.7s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-eye-slash text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1060,7 +937,7 @@
                     </div>
                 </div>
 
-                <!-- Card 5: !comandos -->
+                <!-- 5: !comandos -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.8s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-book-journal-whills text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1073,7 +950,7 @@
                     </div>
                 </div>
 
-                <!-- Card 6: !insta -->
+                <!-- 6: !insta -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 0.9s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-brands fa-instagram text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1086,7 +963,7 @@
                     </div>
                 </div>
 
-                <!-- Card 7: !youtube -->
+                <!-- 7: !youtube -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.0s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-brands fa-youtube text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1099,7 +976,7 @@
                     </div>
                 </div>
 
-                <!-- Card 8: !elo -->
+                <!-- 8: !elo -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.1s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-medal text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1112,7 +989,7 @@
                     </div>
                 </div>
 
-<!-- 9: !morena -->
+                <!-- 9: !morena -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.2s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-heart text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1125,7 +1002,7 @@
                     </div>
                 </div>
 
-<!-- 10: !gado -->
+                <!-- 10: !gado -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.3s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-cow text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1138,7 +1015,7 @@
                     </div>
                 </div>
 
-<!-- 11: !followage -->
+                <!-- 11: !followage -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.4s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-user-clock text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1151,7 +1028,7 @@
                     </div>
                 </div>
 
-<!-- 12: !level -->
+                <!-- 12: !level -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.5s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-layer-group text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1164,7 +1041,7 @@
                     </div>
                 </div>
 
-<!-- 13: !points -->
+                <!-- 13: !points -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.6s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-coins text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1177,7 +1054,7 @@
                     </div>
                 </div>
 
-<!-- 15: !uptime -->
+                <!-- 15: !uptime -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.8s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-clock text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1190,7 +1067,7 @@
                     </div>
                 </div>
 
-<!-- 16: !watchtime -->
+                <!-- 16: !watchtime -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 1.9s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-glasses text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1203,7 +1080,7 @@
                     </div>
                 </div>
 
-<!-- 17: !xp -->
+                <!-- 17: !xp -->
                 <div class="cmd-card-wrapper clip-hex fade-in-up" style="animation-delay: 2.0s;">
                     <div class="cmd-card clip-hex relative overflow-hidden">
                         <i class="fa-solid fa-bolt text-4xl absolute right-3 bottom-3 opacity-10 text-[var(--gold)]"></i>
@@ -1217,11 +1094,8 @@
                 </div>
             </div>
         </section>
-
-            </div>
-        </section>
         
-        <!-- LEADERBOARD COM ESTILO DOS CARDS DE POSIÇÃO DO LOL -->
+        <!-- Leaderboard -->
         <section class="mb-16 rank-stage" aria-labelledby="leaderboard-title">
             <div class="rank-heading fade-in-up" style="animation-delay: 1.2s;">
                 <h2 id="leaderboard-title" class="text-2xl sm:text-3xl font-bold text-center tracking-widest text-[#f0e6d2] uppercase">
@@ -1232,7 +1106,7 @@
 
             <div class="rank-podium mb-8">
                 
-                <!-- 2º LUGAR (Vermelho Grandmaster) -->
+                <!-- 2º LUGAR -->
                 <article class="lol-card rank-second fade-in-up" style="animation-delay: 1.4s;" aria-label="Segundo lugar">
                     <div class="lol-card-border"><img class="lol-frame-image" src="moldura-2.png" alt="" aria-hidden="true"><svg class="lol-frame-art" viewBox="0 0 280 440" preserveAspectRatio="none" aria-hidden="true">
                         <path class="edge" d="M18 37 99 37 119 44 131 28 140 4 149 28 161 44 181 37 262 37 M18 37 20 96 9 120 23 145 11 174 24 198 12 225 24 250 11 278 24 302 12 329 24 352 13 382 31 390 47 407 89 400 121 412 140 427 159 412 191 400 233 407 249 390 267 382 256 352 268 329 256 302 269 278 256 250 268 225 256 198 269 174 257 145 271 120 260 96 262 37"/>
@@ -1249,7 +1123,6 @@
                     <div class="lol-top-crest"></div>
                     <div class="lol-card-inner">
                         <div class="lol-top-gem"></div>
-                        
                         <div class="lol-avatar-container">
                             <div class="lol-avatar-wing left"></div>
                             <div class="lol-avatar-frame">
@@ -1257,15 +1130,12 @@
                             </div>
                             <div class="lol-avatar-wing right"></div>
                         </div>
-
                         <div class="lol-rank-place">2º LUGAR</div>
                         <h3 id="rank-name-2" class="lol-player-name">A aguardar...</h3>
-                        
                         <div class="lol-points-badge">
                             <i class="fa-solid fa-stopwatch"></i>
                             <span id="rank-points-2">- Pontos</span>
                         </div>
-
                         <div class="lol-bottom-crest">
                             <div class="lol-wing-shard"></div>
                             <div class="lol-wing-inner-glow"></div>
@@ -1273,7 +1143,7 @@
                     </div>
                 </article>
 
-                <!-- 1º LUGAR (Ouro Piltover / Ciano Challenger) -->
+                <!-- 1º LUGAR -->
                 <article class="lol-card rank-first fade-in-up" style="animation-delay: 1.3s;" aria-label="Primeiro lugar">
                     <div class="lol-card-border"><img class="lol-frame-image" src="moldura-1.png" alt="" aria-hidden="true"><img class="lol-crystal-glow" src="moldura-1-cristais.png" alt="" aria-hidden="true"><svg class="lol-frame-art" viewBox="0 0 280 440" preserveAspectRatio="none" aria-hidden="true">
                         <path class="edge" d="M18 37 99 37 119 44 131 28 140 4 149 28 161 44 181 37 262 37 M18 37 20 96 9 120 23 145 11 174 24 198 12 225 24 250 11 278 24 302 12 329 24 352 13 382 31 390 47 407 89 400 121 412 140 427 159 412 191 400 233 407 249 390 267 382 256 352 268 329 256 302 269 278 256 250 268 225 256 198 269 174 257 145 271 120 260 96 262 37"/>
@@ -1292,7 +1162,6 @@
                         <div class="rank-crown text-[#e8bd63] text-xl mb-1 filter drop-shadow-[0_0_8px_#c89b3c]">
                             <i class="fa-solid fa-crown"></i>
                         </div>
-                        
                         <div class="lol-avatar-container">
                             <div class="lol-avatar-wing left"></div>
                             <div class="lol-avatar-frame">
@@ -1300,15 +1169,12 @@
                             </div>
                             <div class="lol-avatar-wing right"></div>
                         </div>
-
                         <div class="lol-rank-place">1º LUGAR</div>
                         <h3 id="rank-name-1" class="lol-player-name">A aguardar...</h3>
-                        
                         <div class="lol-points-badge">
                             <i class="fa-solid fa-crown"></i>
                             <span id="rank-points-1">- Pontos</span>
                         </div>
-
                         <div class="lol-bottom-crest">
                             <div class="lol-wing-shard"></div>
                             <div class="lol-wing-inner-glow"></div>
@@ -1316,7 +1182,7 @@
                     </div>
                 </article>
 
-                <!-- 3º LUGAR (Roxo Void / Master) -->
+                <!-- 3º LUGAR -->
                 <article class="lol-card rank-third fade-in-up" style="animation-delay: 1.5s;" aria-label="Terceiro lugar">
                     <div class="lol-card-border"><img class="lol-frame-image" src="moldura-3.png" alt="" aria-hidden="true"><svg class="lol-frame-art" viewBox="0 0 280 440" preserveAspectRatio="none" aria-hidden="true">
                         <path class="edge" d="M18 37 99 37 119 44 131 28 140 4 149 28 161 44 181 37 262 37 M18 37 20 96 9 120 23 145 11 174 24 198 12 225 24 250 11 278 24 302 12 329 24 352 13 382 31 390 47 407 89 400 121 412 140 427 159 412 191 400 233 407 249 390 267 382 256 352 268 329 256 302 269 278 256 250 268 225 256 198 269 174 257 145 271 120 260 96 262 37"/>
@@ -1333,7 +1199,6 @@
                     <div class="lol-top-crest"></div>
                     <div class="lol-card-inner">
                         <div class="lol-top-gem"></div>
-                        
                         <div class="lol-avatar-container">
                             <div class="lol-avatar-wing left"></div>
                             <div class="lol-avatar-frame">
@@ -1341,15 +1206,12 @@
                             </div>
                             <div class="lol-avatar-wing right"></div>
                         </div>
-
                         <div class="lol-rank-place">3º LUGAR</div>
                         <h3 id="rank-name-3" class="lol-player-name">A aguardar...</h3>
-                        
                         <div class="lol-points-badge">
                             <i class="fa-solid fa-medal"></i>
                             <span id="rank-points-3">- Pontos</span>
                         </div>
-
                         <div class="lol-bottom-crest">
                             <div class="lol-wing-shard"></div>
                             <div class="lol-wing-inner-glow"></div>
@@ -1359,7 +1221,7 @@
 
             </div>
 
-            <!-- DEMAIS CLASSIFICADOS -->
+            <!-- Demais Classificados -->
             <div class="rank-lower fade-in-up" style="animation-delay: 1.6s">
                 <h4 class="rank-lower-title"><i class="fa-solid fa-list-ol mr-2"></i>Demais classificados</h4>
                 <div class="rank-lower-grid">
@@ -1392,6 +1254,7 @@
         <p>© 2026 AL1SS0NL.</p>
     </footer>
     
+    <!-- Copiar Comandos -->
     <script>
         document.querySelectorAll('.cmd-card').forEach(card => {
             const title = card.querySelector('.cmd-title');
@@ -1435,10 +1298,10 @@
         });
     </script>
 
-    <!-- Script para atualizar o Leaderboard dinamicamente -->
+    <!-- Atualização Dinâmica do Leaderboard -->
     <script>
         const LEADERBOARD_URL = 'https://api.jsonbin.io/v3/b/6ad0da85ac6210605a33fee6/latest';
-        const LEADERBOARD_REFRESH_MS = 5 * 60 * 1000; // 5 minutos
+        const LEADERBOARD_REFRESH_MS = 5 * 60 * 1000;
 
         async function atualizarLeaderboard() {
             try {
@@ -1492,8 +1355,5 @@
         atualizarLeaderboard();
         setInterval(atualizarLeaderboard, LEADERBOARD_REFRESH_MS);
     </script>
-    
 </body>
 </html>
-
-
