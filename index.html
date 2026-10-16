@@ -832,7 +832,7 @@
             .lol-card.rank-first { order: 0; }
             .lol-card.rank-second { order: 1; }
             .lol-card.rank-third { order: 2; }
-            .rank-first .lol-rank-place { transform: translateY(-377px); }
+            .rank-first .lol-rank-place { transform: translateY(-390px); }
             .rank-heading { gap: 8px; }
             .rank-heading h2 { font-size: clamp(1.05rem, 4.8vw, 1.5rem); letter-spacing: .1em; }
             .rank-kicker { padding: 0 8px; font-size: .68rem; line-height: 1.55; letter-spacing: .14em; }
@@ -864,8 +864,16 @@
         @media (hover: none) and (pointer: coarse) and (max-width: 1024px) {
             body {
                 background-color: #05090a !important;
-                background-image: radial-gradient(ellipse at 50% 12%, rgba(0, 92, 112, .16), transparent 55%), linear-gradient(#05090a, #07090d) !important;
+                background-image: none !important;
                 background-attachment: scroll !important;
+            }
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                z-index: 0;
+                pointer-events: none;
+                background: radial-gradient(ellipse at 50% 12%, rgba(0, 92, 112, .16), transparent 55%), linear-gradient(#05090a, #07090d);
             }
             .hextech-backdrop {
                 display: block !important;
@@ -878,7 +886,10 @@
                 animation: none !important;
                 filter: none !important;
             }
-            .hextech-center-name, .z-drive-bg { display: none !important; }
+            .hextech-backdrop .hextech-emblem { display: none !important; }
+            .hextech-center-name { display: block !important; opacity: .2; }
+            .z-drive-bg { display: none !important; }
+            .rank-first .lol-rank-place { transform: translateY(-390px); }
         }
         @media (prefers-reduced-motion: reduce) {
             .lol-frame-image, .lol-crystal-glow, .rank-first .lol-avatar-frame, .rank-first .rank-crown { animation: none; }
